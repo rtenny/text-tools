@@ -18,6 +18,9 @@ $routes->get('logout', 'Auth\LogoutController::index');
 $routes->get('password-reset/(:num)/(:segment)', 'Auth\PasswordResetController::verify/$1/$2');
 $routes->post('password-reset/(:num)/(:segment)', 'Auth\PasswordResetController::reset/$1/$2');
 
+// Debug route (remove in production)
+$routes->get('login-debug', 'Auth\LoginControllerDebug::test');
+
 /*
  * --------------------------------------------------------------------
  * Protected Routes
@@ -25,6 +28,7 @@ $routes->post('password-reset/(:num)/(:segment)', 'Auth\PasswordResetController:
  */
 // Role-based dashboard redirect (protected by 'auth' filter)
 $routes->get('dashboard', 'DashboardController::index', ['filter' => 'auth']);
+$routes->post('dashboard', 'DashboardController::index', ['filter' => 'auth']); // Handle POST redirects from login
 
 /*
  * --------------------------------------------------------------------

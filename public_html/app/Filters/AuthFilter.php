@@ -24,14 +24,25 @@ class AuthFilter implements FilterInterface
     {
         $session = session();
 
+        // Debug logging
+        log_message('debug', '=== AUTH FILTER CHECK ===');
+        log_message('debug', 'Session ID: ' . session_id());
+        log_message('debug', 'Has user_id: ' . ($session->has('user_id') ? 'YES' : 'NO'));
+        log_message('debug', 'user_id value: ' . ($session->get('user_id') ?? 'NULL'));
+        log_message('debug', 'is_logged_in value: ' . ($session->get('is_logged_in') ? 'true' : 'false/null'));
+        log_message('debug', 'All session data: ' . json_encode($session->get()));
+
         // Check if user is logged in
         if (!$session->has('user_id')) {
             // Store intended URL for redirect after login
             $session->set('intended_url', current_url());
 
+            log_message('debug', 'AUTH FILTER: User not logged in, redirecting to login');
             // Redirect to login with error message
             return redirect()->to('/login')->with('error', 'Please log in to access this page.');
         }
+
+        log_message('debug', 'AUTH FILTER: User authenticated, allowing access');
 
         // Check if user account is still active
         if (!$session->get('is_active')) {

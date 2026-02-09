@@ -22,6 +22,9 @@ class DashboardController extends BaseController
 
     public function index()
     {
+        log_message('debug', '=== SUPERADMIN DASHBOARD INDEX CALLED ===');
+        log_message('debug', 'Session data: ' . json_encode(session()->get()));
+
         // Get statistics
         $totalProjects = $this->projectModel->countAllResults();
         $activeProjects = $this->projectModel->where('is_active', 1)->countAllResults();
