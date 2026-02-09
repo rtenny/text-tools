@@ -1,0 +1,72 @@
+# CodeIgniter 4 writable directory
+writable/cache/*
+!writable/cache/index.html
+writable/logs/*
+!writable/logs/index.html
+writable/session/*
+!writable/session/index.html
+writable/uploads/*
+!writable/uploads/index.html
+writable/debugbar/*
+
+# User-generated content
+public/uploads/*
+!public/uploads/index.html
+
+# Environment files
+.env
+.env.*.php
+.env.local
+.env.production
+!.env.example
+
+# Composer
+/vendor/
+composer.phar
+composer.lock
+
+# PHPUnit
+.phpunit.result.cache
+phpunit.xml
+!phpunit.xml.dist
+
+# IDE and Editor files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+.project
+.buildpath
+.settings/
+*.tmproj
+*.tmproject
+nbproject/
+
+# OS-specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Backup and temporary files
+*~
+*.bak
+*.swp
+*.swo
+*.tmp
+*.log
+
+# Node modules (if using front-end build tools)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Build files
+/public/build/
+/public/hot
+/public/storage
+/storage/*.key
