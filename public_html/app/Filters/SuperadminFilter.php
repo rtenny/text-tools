@@ -24,21 +24,13 @@ class SuperadminFilter implements FilterInterface
     {
         $session = session();
 
-        log_message('debug', '=== SUPERADMIN FILTER CHECK ===');
-        log_message('debug', 'Session ID: ' . session_id());
-        log_message('debug', 'Has user_id: ' . ($session->has('user_id') ? 'YES' : 'NO'));
-        log_message('debug', 'Role: ' . ($session->get('role') ?? 'NULL'));
-
         // Check if user is logged in
         if (!$session->has('user_id')) {
-            log_message('debug', 'SUPERADMIN FILTER: No user_id, redirecting to login');
             return redirect()->to('/login')->with('error', 'Please log in to access this page.');
         }
 
         // Check if user is superadmin
         if ($session->get('role') !== 'superadmin') {
-            log_message('debug', 'SUPERADMIN FILTER: Role is not superadmin, denying access');
-            // Redirect to appropriate dashboard based on role
             $role = $session->get('role');
 
             if ($role === 'admin') {
@@ -47,11 +39,8 @@ class SuperadminFilter implements FilterInterface
                 return redirect()->to('/tools')->with('error', 'Access denied. Superadmin privileges required.');
             }
 
-            // Fallback to login if role is not recognized
             return redirect()->to('/login')->with('error', 'Access denied.');
         }
-
-        log_message('debug', 'SUPERADMIN FILTER: User is superadmin, allowing access');
     }
 
     /**

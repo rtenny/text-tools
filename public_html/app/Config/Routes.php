@@ -18,9 +18,6 @@ $routes->get('logout', 'Auth\LogoutController::index');
 $routes->get('password-reset/(:num)/(:segment)', 'Auth\PasswordResetController::verify/$1/$2');
 $routes->post('password-reset/(:num)/(:segment)', 'Auth\PasswordResetController::reset/$1/$2');
 
-// Debug route (remove in production)
-$routes->get('login-debug', 'Auth\LoginControllerDebug::test');
-
 /*
  * --------------------------------------------------------------------
  * Protected Routes
@@ -28,7 +25,6 @@ $routes->get('login-debug', 'Auth\LoginControllerDebug::test');
  */
 // Role-based dashboard redirect (protected by 'auth' filter)
 $routes->get('dashboard', 'DashboardController::index', ['filter' => 'auth']);
-$routes->post('dashboard', 'DashboardController::index', ['filter' => 'auth']); // Handle POST redirects from login
 
 /*
  * --------------------------------------------------------------------
@@ -53,4 +49,21 @@ $routes->group('superadmin', ['filter' => ['auth', 'superadmin']], function($rou
     $routes->get('users/create', 'Superadmin\UsersController::create');
     $routes->post('users/create', 'Superadmin\UsersController::store');
     $routes->get('users/password-reset-link/(:num)', 'Superadmin\UsersController::generatePasswordResetLink/$1');
+});
+
+/*
+ * --------------------------------------------------------------------
+ * Admin Routes
+ * --------------------------------------------------------------------
+ * Protected by 'auth', 'admin', and 'tenant' filters
+ */
+$routes->group('admin', ['filter' => ['auth', 'admin', 'tenant']], function($routes) {
+    // Dashboard
+    $routes->get('dashboard', 'Admin\DashboardController::index');
+
+    // Users Management (within project)
+    $routes->get('users', 'Admin\UsersController::index');
+    $routes->get('users/create', 'Admin\UsersController::create');
+    $routes->post('users/create', 'Admin\UsersController::store');
+    $routes->get('users/password-reset-link/(:num)', 'Admin\UsersController::generatePasswordResetLink/$1');
 });
