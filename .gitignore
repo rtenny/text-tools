@@ -30,6 +30,9 @@ composer.lock
 phpunit.xml
 !phpunit.xml.dist
 
+# Claude Code
+.claude/
+
 # IDE and Editor files
 .idea/
 .vscode/
