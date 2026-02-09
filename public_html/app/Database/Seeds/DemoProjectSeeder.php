@@ -26,7 +26,7 @@ class DemoProjectSeeder extends Seeder
             'slug'                => 'demo-project',
             'languages'           => ['en', 'de', 'es'],
             'default_ai_provider' => 'claude',
-            'api_key'             => $encryptionService->encrypt('your-demo-api-key-here'),
+            'api_key'             => $encryptionService->encrypt('your-actual-api-key-here'), // Replace with your actual API key
             'is_active'           => 1,
         ];
 
