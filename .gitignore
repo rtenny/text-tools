@@ -1,24 +1,24 @@
 # CodeIgniter 4 writable directory
-writable/cache/*
-!writable/cache/index.html
-writable/logs/*
-!writable/logs/index.html
-writable/session/*
-!writable/session/index.html
-writable/uploads/*
-!writable/uploads/index.html
-writable/debugbar/*
+public_html/writable/cache/*
+!public_html/writable/cache/index.html
+public_html/writable/logs/*
+!public_html/writable/logs/index.html
+public_html/writable/session/*
+!public_html/writable/session/index.html
+public_html/writable/uploads/*
+!public_html/writable/uploads/index.html
+public_html/writable/debugbar/*
 
 # User-generated content
-public/uploads/*
-!public/uploads/index.html
+public_html/public/uploads/*
+!public_html/public/uploads/index.html
 
 # Environment files
-.env
-.env.*.php
-.env.local
-.env.production
-!.env.example
+public_html/.env
+public_html/.env.*.php
+public_html/.env.local
+public_html/.env.production
+!public_html/.env.example
 
 # Composer
 /vendor/
