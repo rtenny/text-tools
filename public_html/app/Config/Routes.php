@@ -9,6 +9,25 @@ $routes->get('/', 'Home::index');
 
 /*
  * --------------------------------------------------------------------
+ * Public Routes (Authentication)
+ * --------------------------------------------------------------------
+ */
+$routes->get('login', 'Auth\LoginController::index');
+$routes->post('login', 'Auth\LoginController::authenticate');
+$routes->get('logout', 'Auth\LogoutController::index');
+$routes->get('password-reset/(:num)/(:segment)', 'Auth\PasswordResetController::verify/$1/$2');
+$routes->post('password-reset/(:num)/(:segment)', 'Auth\PasswordResetController::reset/$1/$2');
+
+/*
+ * --------------------------------------------------------------------
+ * Protected Routes
+ * --------------------------------------------------------------------
+ */
+// Role-based dashboard redirect (protected by 'auth' filter)
+$routes->get('dashboard', 'DashboardController::index', ['filter' => 'auth']);
+
+/*
+ * --------------------------------------------------------------------
  * Superadmin Routes
  * --------------------------------------------------------------------
  * Protected by 'auth' and 'superadmin' filters
