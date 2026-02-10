@@ -2,7 +2,7 @@
 
 ## 🎯 Progress Status
 
-**Last Updated**: 2026-02-09
+**Last Updated**: 2026-02-10
 
 | Phase | Status | Completion Date | Commit |
 |-------|--------|----------------|--------|
@@ -10,11 +10,12 @@
 | Phase 2: Security & Authentication Layer | ✅ **COMPLETE** | 2026-02-09 | d33edd6 |
 | Phase 3: AI Service Layer | ✅ **COMPLETE** | 2026-02-09 | a0f8498 |
 | Phase 4: Superadmin Dashboard | ✅ **COMPLETE** | 2026-02-09 | df3b013 |
-| Phase 5: Admin Dashboard | ✅ **COMPLETE** | 2026-02-09 | - |
+| Phase 5: Admin Dashboard | ✅ **COMPLETE** | 2026-02-09 | 8ff4dc0 |
 | Phase 6: Three-Tab Interface | ⏳ **PENDING** | - | - |
-| Phase 7: Auth Views & Dashboard Redirect | ✅ **COMPLETE** | 2026-02-09 | 709c2e6 |
+| Phase 7: Auth Views & Dashboard Redirect | ✅ **COMPLETE** | 2026-02-09 | 8460309 |
+| Bug Fixes: Password reset, project edit, admin layout | ✅ **COMPLETE** | 2026-02-10 | a8c2d51 |
 
-**Next Steps**: Phase 5 complete! Admin dashboard with project-scoped user management ready. Proceed with Phase 6 (Three-Tab Interface)
+**Next Steps**: Bug fixes complete. Proceed with Phase 6 (Three-Tab Interface)
 
 ---
 
@@ -52,9 +53,11 @@ The new system will support three user roles (Superadmin, Admin, User), multiple
 
 **3. password_resets**
 - Tracks password reset tokens
-- Fields: `id`, `user_id`, `token` (MD5 hash), `expires_at`, `used_at`, `created_at`
-- Token format: `md5(date('Y-m-d H') . $user_id . $secretKey)`
-- Expires after 1 hour with grace period
+- Fields: `id`, `user_id`, `token` (VARCHAR 32), `expires_at`, `used_at`, `created_at`
+- Token format: random hex string via `bin2hex(random_bytes(16))`
+- Tokens are persisted to database on generation and validated against DB
+- Old tokens for a user are deleted when a new reset link is generated
+- Expires after 1 hour
 
 **4. activity_logs** (optional but recommended)
 - Tracks AI operations for auditing
@@ -95,8 +98,9 @@ The new system will support three user roles (Superadmin, Admin, User), multiple
    - Uses encryption key from .env file
 
 2. **`PasswordResetService.php`**
-   - Generate MD5 tokens: `md5(date('Y-m-d H') . $userId . $appKey)`
-   - Validate tokens with 1-hour grace period (check current hour, then previous hour)
+   - Generate random tokens: `bin2hex(random_bytes(16))`
+   - Save tokens to database with expiry on generation
+   - Validate tokens against database (checks existence, expiry, and used status)
    - Methods: `generateToken()`, `validateToken()`, `createResetLink()`
 
 **Create Filters** (Middleware):
@@ -462,36 +466,32 @@ $apiKey = $encryptionService->decrypt($project['api_key']);
 - Never log or display decrypted API keys
 - Use HTTPS in production
 
-### 2. Password Reset (MD5 Token with 1-Hour Validity)
+### 2. Password Reset (Random Token with 1-Hour Validity)
 
 **File**: `app/Libraries/PasswordResetService.php`
 
 ```php
 class PasswordResetService {
-    private string $appKey;
-
-    public function __construct() {
-        $this->appKey = config('Encryption')->key;
-    }
-
-    public function generateToken(int $userId): string {
-        $hour = date('Y-m-d H');
-        return md5($hour . $userId . $this->appKey);
+    public function generateToken(): string {
+        return bin2hex(random_bytes(16)); // 32-char hex token
     }
 
     public function validateToken(int $userId, string $token): bool {
-        // Check current hour
-        if ($this->generateToken($userId) === $token) {
-            return true;
-        }
-        // Check previous hour (grace period)
-        $previousHour = date('Y-m-d H', strtotime('-1 hour'));
-        $previousToken = md5($previousHour . $userId . $this->appKey);
-        return $previousToken === $token;
+        $resetModel = new PasswordResetModel();
+        $record = $resetModel->getValidToken($userId, $token);
+        return $record !== null; // Checks: exists, not expired, not used
     }
 
     public function createResetLink(int $userId): string {
-        $token = $this->generateToken($userId);
+        $token = $this->generateToken();
+        $expiresAt = $this->getExpirationTime();
+
+        $resetModel = new PasswordResetModel();
+        $resetModel->deleteUserTokens($userId); // Invalidate old tokens
+        $resetModel->skipValidation(true)->insert([
+            'user_id' => $userId, 'token' => $token, 'expires_at' => $expiresAt,
+        ]);
+
         return base_url("password-reset/{$userId}/{$token}");
     }
 }
@@ -499,11 +499,12 @@ class PasswordResetService {
 
 **Flow**:
 1. Admin clicks "Generate Password Reset Link" for a user
-2. Display modal with link and copy button (no email sending)
-3. User visits link
-4. Validate token (check current hour, then previous hour)
-5. Show password form if valid
-6. Update password and mark token as used
+2. Old tokens for that user are deleted, new random token saved to database
+3. Display modal with link and copy button (no email sending)
+4. User visits link
+5. Validate token against database (exists, not expired, not used)
+6. Show password form if valid
+7. Update password (with `skipValidation` to avoid model validation on partial update) and mark token as used
 
 ### 3. AI Provider Toggling
 
@@ -735,11 +736,12 @@ return $this->response->setJSON([
 - [ ] Cannot access other projects' data (tenant isolation)
 
 **Password Reset**:
-- [ ] Generated link is valid for current hour
-- [ ] Link expires after 1 hour
-- [ ] Grace period works (link valid for previous hour)
-- [ ] After password reset, login with new password succeeds
-- [ ] Token marked as used and cannot be reused
+- [x] Generated link uses random token saved to database
+- [x] Link expires after 1 hour (checked via database `expires_at`)
+- [x] Generating a new link invalidates previous tokens for that user
+- [x] After password reset, login with new password succeeds
+- [x] Token marked as used and cannot be reused
+- [x] Password update uses `skipValidation` to avoid model validation on partial update
 
 **AI Integration**:
 - [ ] Switch project AI provider (claude ↔ openai)
