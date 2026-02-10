@@ -19,10 +19,15 @@ class TranslatorController extends BaseController
 
         $languages = is_string($project['languages']) ? json_decode($project['languages'], true) : $project['languages'];
 
+        // Get towns assigned to this project
+        $townService = new \App\Services\TownService();
+        $towns = $townService->getTownsForProject($projectId);
+
         $data = [
             'title' => 'Text Tools',
             'projectName' => $project['name'] ?? 'Project',
             'languages' => $languages,
+            'towns' => $towns,
         ];
 
         return view('tools/index', $data);

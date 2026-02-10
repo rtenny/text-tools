@@ -35,6 +35,12 @@ class GeneratorController extends BaseController
 
         $projectId = session()->get('project_id');
 
+        // Validate that the selected town is assigned to the user's project
+        $townService = new \App\Services\TownService();
+        if (!$townService->validateTownForProject($projectId, $propertyData['location'])) {
+            return $this->response->setJSON(['success' => false, 'error' => 'The selected location is not available for your project.']);
+        }
+
         try {
             $aiService = AIServiceFactory::create($projectId);
 

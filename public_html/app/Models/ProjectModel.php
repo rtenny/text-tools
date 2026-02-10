@@ -138,4 +138,28 @@ class ProjectModel extends Model
     {
         return $this->where('slug', $slug)->first();
     }
+
+    /**
+     * Get towns assigned to this project
+     *
+     * @param int $projectId
+     * @return array
+     */
+    public function getTowns(int $projectId): array
+    {
+        $projectTownModel = new \App\Models\ProjectTownModel();
+        return $projectTownModel->getTownsForProject($projectId);
+    }
+
+    /**
+     * Get town IDs assigned to this project
+     *
+     * @param int $projectId
+     * @return array
+     */
+    public function getTownIds(int $projectId): array
+    {
+        $projectTownModel = new \App\Models\ProjectTownModel();
+        return $projectTownModel->getTownIdsForProject($projectId);
+    }
 }
