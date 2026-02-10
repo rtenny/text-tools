@@ -40,4 +40,17 @@ interface AIServiceInterface
      * @throws \Exception If rewriting fails
      */
     public function rewriteText(string $text, string $language): string;
+
+    /**
+     * Generate image alt text descriptions using vision API
+     *
+     * @param string $imageBase64 Base64 encoded image data
+     * @param string $mimeType Image MIME type (image/jpeg, image/png, image/webp)
+     * @param string $propertyType Property type (Villa, Apartment, etc.)
+     * @param string $location Location/town name
+     * @param string $city City name
+     * @return array Array of 3 alt text options
+     * @throws \Exception If generation fails
+     */
+    public function generateImageAltText(string $imageBase64, string $mimeType, string $propertyType, string $location, string $city): array;
 }

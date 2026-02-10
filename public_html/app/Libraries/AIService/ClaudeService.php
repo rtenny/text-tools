@@ -132,6 +132,25 @@ Provide ONLY the rewritten {$lang} text, without any explanations or additional 
     }
 
     /**
+     * Generate image alt text descriptions using vision API
+     *
+     * @param string $imageBase64 Base64 encoded image data
+     * @param string $mimeType Image MIME type (image/jpeg, image/png, image/webp)
+     * @param string $propertyType Property type (Villa, Apartment, etc.)
+     * @param string $location Location/town name
+     * @param string $city City name
+     * @return array Array of 3 alt text options
+     * @throws \Exception If generation fails
+     */
+    public function generateImageAltText(string $imageBase64, string $mimeType, string $propertyType, string $location, string $city): array
+    {
+        $prompt = $this->buildAltTextPrompt($propertyType, $location, $city);
+        $response = $this->callClaudeVisionAPI($imageBase64, $mimeType, $prompt, 1024);
+
+        return $this->parseAltTextOptions($response);
+    }
+
+    /**
      * Build prompt for property description generation (English)
      *
      * @param array $propertyData Property details
@@ -224,5 +243,146 @@ Write ONLY the property description without any additional explanations or comme
         }
 
         return $result['content'][0]['text'];
+    }
+
+    /**
+     * Build prompt for image alt text generation
+     *
+     * @param string $propertyType Property type
+     * @param string $location Location/town name
+     * @param string $city City name
+     * @return string Generated prompt
+     */
+    private function buildAltTextPrompt(string $propertyType, string $location, string $city): string
+    {
+        return "You are an SEO and accessibility expert specialising in real estate property images.
+
+Analyse this property image and generate exactly 3 different alt text descriptions in British English (UK spelling and terminology).
+
+Property Context:
+- Property Type: {$propertyType}
+- Location: {$city}, {$location}, Spain
+
+Requirements for each alt text:
+- Maximum 150 characters
+- Use British English (e.g., 'colour' not 'color', 'modernised' not 'modernized')
+- Include property context for better SEO (property type and/or location when relevant)
+- Describe what's actually visible in the image (room type, features, views, style)
+- Be specific and descriptive (avoid generic terms like 'nice' or 'beautiful')
+- Focus on key visual elements that would interest potential buyers
+- Natural, professional language
+
+Examples of good alt text:
+- 'Modern open-plan kitchen with sea views in Costa del Sol villa'
+- 'Spacious master bedroom with fitted wardrobes in Marbella apartment'
+- 'Sun-drenched terrace overlooking Mediterranean in luxury property'
+
+Format your response as a numbered list from 1 to 3:
+1. First alt text option
+2. Second alt text option
+3. Third alt text option
+
+Provide ONLY the numbered list, no additional explanations.";
+    }
+
+    /**
+     * Make Vision API call to Claude with image
+     *
+     * @param string $imageBase64 Base64 encoded image
+     * @param string $mimeType Image MIME type
+     * @param string $prompt The prompt to send
+     * @param int $maxTokens Maximum tokens for response
+     * @return string API response text
+     * @throws \Exception If API call fails
+     */
+    private function callClaudeVisionAPI(string $imageBase64, string $mimeType, string $prompt, int $maxTokens = 1024): string
+    {
+        $data = [
+            'model' => $this->model,
+            'max_tokens' => $maxTokens,
+            'messages' => [
+                [
+                    'role' => 'user',
+                    'content' => [
+                        [
+                            'type' => 'image',
+                            'source' => [
+                                'type' => 'base64',
+                                'media_type' => $mimeType,
+                                'data' => $imageBase64,
+                            ],
+                        ],
+                        [
+                            'type' => 'text',
+                            'text' => $prompt,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $ch = curl_init($this->endpoint);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+            'x-api-key: ' . $this->apiKey,
+            'anthropic-version: 2023-06-01',
+        ]);
+
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $curlError = curl_error($ch);
+        curl_close($ch);
+
+        if ($curlError) {
+            log_message('error', 'Claude Vision API connection error: ' . $curlError);
+            throw new \Exception('Connection error: ' . $curlError);
+        }
+
+        if ($httpCode !== 200) {
+            $errorData = json_decode($response, true);
+            $errorMsg = $errorData['error']['message'] ?? 'Unknown error';
+            log_message('error', "Claude Vision API error (HTTP {$httpCode}): {$errorMsg}");
+            throw new \Exception("API error (HTTP {$httpCode}): " . $errorMsg);
+        }
+
+        $result = json_decode($response, true);
+
+        if (!isset($result['content'][0]['text'])) {
+            log_message('error', 'Unexpected Claude Vision API response format');
+            throw new \Exception('Unexpected API response format');
+        }
+
+        return $result['content'][0]['text'];
+    }
+
+    /**
+     * Parse alt text options from API response
+     *
+     * @param string $response API response text
+     * @return array Array of 3 alt text options
+     * @throws \Exception If parsing fails
+     */
+    private function parseAltTextOptions(string $response): array
+    {
+        $options = [];
+        $lines = explode("\n", trim($response));
+
+        foreach ($lines as $line) {
+            $line = trim($line);
+            // Match lines starting with "1.", "2.", or "3."
+            if (preg_match('/^(\d+)\.\s*(.+)$/', $line, $matches)) {
+                $options[] = trim($matches[2]);
+            }
+        }
+
+        if (count($options) !== 3) {
+            log_message('error', 'Failed to parse 3 alt text options from response: ' . $response);
+            throw new \Exception('Failed to generate 3 alt text options');
+        }
+
+        return $options;
     }
 }

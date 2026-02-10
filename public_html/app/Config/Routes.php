@@ -88,4 +88,5 @@ $routes->group('tools', ['filter' => ['auth', 'tenant']], function($routes) {
     $routes->post('translate', 'Tools\TranslatorController::translate');
     $routes->post('rewrite', 'Tools\RewriterController::rewrite');
     $routes->post('generate', 'Tools\GeneratorController::generate');
+    $routes->post('alttext', 'Tools\AltTextController::generateAltText');
 });
