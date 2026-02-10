@@ -32,52 +32,53 @@ class PasswordResetService
     }
 
     /**
-     * Generate MD5 token for password reset
+     * Generate a random token for password reset
      *
-     * Token format: md5(date('Y-m-d H') . $userId . $appKey)
-     *
-     * @param int $userId User ID
-     * @return string MD5 hash (32 characters)
+     * @return string 32-character hex token
      */
-    public function generateToken(int $userId): string
+    public function generateToken(): string
     {
-        $hour = date('Y-m-d H');
-        return md5($hour . $userId . $this->appKey);
+        return bin2hex(random_bytes(16));
     }
 
     /**
-     * Validate password reset token
-     *
-     * Checks if token matches current hour or previous hour (grace period).
+     * Validate password reset token against the database
      *
      * @param int $userId User ID
      * @param string $token Token to validate
-     * @return bool True if token is valid
+     * @return bool True if token is valid (exists, not expired, not used)
      */
     public function validateToken(int $userId, string $token): bool
     {
-        // Check current hour
-        $currentToken = $this->generateToken($userId);
-        if ($currentToken === $token) {
-            return true;
-        }
+        $resetModel = new \App\Models\PasswordResetModel();
+        $record = $resetModel->getValidToken($userId, $token);
 
-        // Check previous hour (grace period)
-        $previousHour = date('Y-m-d H', strtotime('-1 hour'));
-        $previousToken = md5($previousHour . $userId . $this->appKey);
-
-        return $previousToken === $token;
+        return $record !== null;
     }
 
     /**
-     * Create password reset link
+     * Create password reset link and save token to database
      *
      * @param int $userId User ID
      * @return string Full password reset URL
      */
     public function createResetLink(int $userId): string
     {
-        $token = $this->generateToken($userId);
+        $token = $this->generateToken();
+        $expiresAt = $this->getExpirationTime();
+
+        $resetModel = new \App\Models\PasswordResetModel();
+
+        // Invalidate any existing unused tokens for this user
+        $resetModel->deleteUserTokens($userId);
+
+        // Save new token
+        $resetModel->skipValidation(true)->insert([
+            'user_id'    => $userId,
+            'token'      => $token,
+            'expires_at' => $expiresAt,
+        ]);
+
         return base_url("password-reset/{$userId}/{$token}");
     }
 

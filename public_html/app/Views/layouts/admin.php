@@ -124,7 +124,7 @@ $currentUser = [
 </head>
 <body class="flex h-screen">
     <!-- Sidebar -->
-    <aside class="sidebar w-64 flex-shrink-0">
+    <aside class="sidebar w-64 flex-shrink-0 relative">
         <div class="p-6">
             <h1 class="text-2xl font-bold text-white flex items-center">
                 <span class="mr-2">🏠</span>
@@ -147,7 +147,7 @@ $currentUser = [
         </nav>
 
         <!-- User Info & Logout -->
-        <div class="absolute bottom-0 left-0 right-0 p-6 border-t border-gray-700">
+        <div class="absolute bottom-0 left-0 w-full p-6 border-t border-gray-700 bg-[#16213e]">
             <div class="flex items-center justify-between mb-3">
                 <div>
                     <p class="text-sm font-medium text-white"><?= esc($currentUser['first_name'] . ' ' . $currentUser['last_name']) ?></p>

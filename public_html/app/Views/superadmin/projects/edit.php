@@ -87,7 +87,7 @@
                 <div class="p-4 bg-[#0f1419] rounded-lg border border-[#2d3561]">
                     <div class="flex space-x-4">
                         <?php
-                            $languages = json_decode($project['languages'], true);
+                            $languages = is_string($project['languages']) ? json_decode($project['languages'], true) : $project['languages'];
                             $langLabels = [
                                 'en' => '🇬🇧 English (EN)',
                                 'de' => '🇩🇪 German (DE)',

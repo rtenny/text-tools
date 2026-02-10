@@ -32,20 +32,9 @@ class PasswordResetController extends BaseController
             return redirect()->to('/login')->with('error', 'Invalid password reset link.');
         }
 
-        // Validate token
+        // Validate token (checks existence, expiry, and used status)
         if (!$this->passwordResetService->validateToken($userId, $token)) {
-            return redirect()->to('/login')->with('error', 'This password reset link has expired or is invalid. Please contact your administrator for a new link.');
-        }
-
-        // Check if token has already been used
-        $existingReset = $this->passwordResetModel
-            ->where('user_id', $userId)
-            ->where('token', $token)
-            ->where('used_at IS NOT NULL')
-            ->first();
-
-        if ($existingReset) {
-            return redirect()->to('/login')->with('error', 'This password reset link has already been used. Please contact your administrator for a new link.');
+            return redirect()->to('/login')->with('error', 'This password reset link has expired, already been used, or is invalid. Please contact your administrator for a new link.');
         }
 
         $data = [
@@ -87,29 +76,19 @@ class PasswordResetController extends BaseController
 
         $password = $this->request->getPost('password');
 
-        // Update user password
-        $this->userModel->update($userId, [
+        // Update user password (skip validation since we're only updating the password)
+        $this->userModel->skipValidation(true)->update($userId, [
             'password_hash' => password_hash($password, PASSWORD_DEFAULT),
         ]);
 
-        // Mark token as used (if exists in database)
-        $existingReset = $this->passwordResetModel
+        // Mark token as used
+        $resetRecord = $this->passwordResetModel
             ->where('user_id', $userId)
             ->where('token', $token)
             ->first();
 
-        if ($existingReset) {
-            $this->passwordResetModel->update($existingReset['id'], [
-                'used_at' => date('Y-m-d H:i:s'),
-            ]);
-        } else {
-            // Create a record for this token usage
-            $this->passwordResetModel->insert([
-                'user_id' => $userId,
-                'token' => $token,
-                'expires_at' => date('Y-m-d H:i:s', strtotime('+1 hour')),
-                'used_at' => date('Y-m-d H:i:s'),
-            ]);
+        if ($resetRecord) {
+            $this->passwordResetModel->markAsUsed($resetRecord['id']);
         }
 
         // Redirect to login with success message
