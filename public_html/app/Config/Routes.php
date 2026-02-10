@@ -67,3 +67,16 @@ $routes->group('admin', ['filter' => ['auth', 'admin', 'tenant']], function($rou
     $routes->post('users/create', 'Admin\UsersController::store');
     $routes->get('users/password-reset-link/(:num)', 'Admin\UsersController::generatePasswordResetLink/$1');
 });
+
+/*
+ * --------------------------------------------------------------------
+ * User / Tools Routes
+ * --------------------------------------------------------------------
+ * Protected by 'auth' and 'tenant' filters
+ */
+$routes->group('tools', ['filter' => ['auth', 'tenant']], function($routes) {
+    $routes->get('/', 'Tools\TranslatorController::index');
+    $routes->post('translate', 'Tools\TranslatorController::translate');
+    $routes->post('rewrite', 'Tools\RewriterController::rewrite');
+    $routes->post('generate', 'Tools\GeneratorController::generate');
+});
