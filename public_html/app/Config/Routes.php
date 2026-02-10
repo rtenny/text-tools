@@ -43,6 +43,15 @@ $routes->group('superadmin', ['filter' => ['auth', 'superadmin']], function($rou
     $routes->get('projects/edit/(:num)', 'Superadmin\ProjectsController::edit/$1');
     $routes->post('projects/edit/(:num)', 'Superadmin\ProjectsController::update/$1');
     $routes->post('projects/delete/(:num)', 'Superadmin\ProjectsController::delete/$1');
+    $routes->post('projects/assign-towns/(:num)', 'Superadmin\ProjectsController::assignTowns/$1');
+
+    // Towns Management
+    $routes->get('towns', 'Superadmin\TownsController::index');
+    $routes->get('towns/create', 'Superadmin\TownsController::create');
+    $routes->post('towns/create', 'Superadmin\TownsController::store');
+    $routes->get('towns/edit/(:num)', 'Superadmin\TownsController::edit/$1');
+    $routes->post('towns/edit/(:num)', 'Superadmin\TownsController::update/$1');
+    $routes->post('towns/delete/(:num)', 'Superadmin\TownsController::delete/$1');
 
     // Admins Management
     $routes->get('users', 'Superadmin\UsersController::index');

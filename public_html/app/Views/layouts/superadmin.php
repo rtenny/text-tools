@@ -161,6 +161,10 @@
                 <i data-lucide="folder" class="mr-3 w-5 h-5"></i>
                 Projects
             </a>
+            <a href="<?= base_url('superadmin/towns') ?>" class="sidebar-link flex items-center px-4 py-3 mb-1 rounded-lg <?= (strpos(current_url(), 'superadmin/towns') !== false) ? 'active' : '' ?>">
+                <i data-lucide="map-pin" class="mr-3 w-5 h-5"></i>
+                Towns
+            </a>
             <a href="<?= base_url('superadmin/users') ?>" class="sidebar-link flex items-center px-4 py-3 mb-1 rounded-lg <?= (strpos(current_url(), 'superadmin/users') !== false) ? 'active' : '' ?>">
                 <i data-lucide="users" class="mr-3 w-5 h-5"></i>
                 Admins

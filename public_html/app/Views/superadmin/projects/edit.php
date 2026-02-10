@@ -112,6 +112,39 @@
         </form>
     </div>
 
+    <!-- Town Assignment Section -->
+    <div class="card p-6 mt-6">
+        <h3 class="text-xl font-semibold text-white mb-4">Assign Towns</h3>
+        <p class="text-gray-400 text-sm mb-4">
+            Select which towns should be available for this project in the property generator.
+        </p>
+
+        <form action="<?= base_url('superadmin/projects/assign-towns/' . $project['id']) ?>" method="post">
+            <?= csrf_field() ?>
+
+            <div class="mb-6">
+                <label for="town_ids" class="form-label">Available Towns</label>
+                <select name="town_ids[]" id="town_ids" class="form-select" multiple>
+                    <?php foreach ($allTowns as $town): ?>
+                        <option value="<?= $town['id'] ?>"
+                                <?= in_array($town['id'], $assignedTownIds) ? 'selected' : '' ?>>
+                            <?= esc($town['name']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <p class="text-xs text-gray-500 mt-1">
+                    Select multiple towns by holding Ctrl/Cmd. Use the search box to filter towns.
+                </p>
+            </div>
+
+            <div class="flex space-x-3">
+                <button type="submit" class="btn-primary flex items-center">
+                    <i data-lucide="save" class="w-4 h-4 mr-2"></i> Update Town Assignments
+                </button>
+            </div>
+        </form>
+    </div>
+
     <!-- Project Info -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
         <div class="card p-4">
@@ -132,5 +165,56 @@
         </div>
     </div>
 </div>
+
+<!-- Select2 for Towns Dropdown -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<style>
+    /* Custom Select2 styling to match dark theme */
+    .select2-container--default .select2-selection--multiple {
+        background-color: #1A1C1E !important;
+        border: 1px solid #3a3d42 !important;
+        border-radius: 6px !important;
+        min-height: 42px !important;
+    }
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        background-color: #D4AF37 !important;
+        border: none !important;
+        color: #000 !important;
+        padding: 4px 8px !important;
+    }
+    .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+        color: #000 !important;
+        margin-right: 5px !important;
+    }
+    .select2-dropdown {
+        background-color: #1A1C1E !important;
+        border: 1px solid #3a3d42 !important;
+    }
+    .select2-container--default .select2-results__option--highlighted {
+        background-color: #D4AF37 !important;
+        color: #000 !important;
+    }
+    .select2-container--default .select2-search--dropdown .select2-search__field {
+        background-color: #2A2C2E !important;
+        border: 1px solid #3a3d42 !important;
+        color: #fff !important;
+    }
+    .select2-container--default .select2-results__option {
+        color: #fff !important;
+    }
+</style>
+
+<script>
+    $(document).ready(function() {
+        $('#town_ids').select2({
+            placeholder: 'Search and select towns...',
+            allowClear: true,
+            width: '100%'
+        });
+    });
+</script>
 
 <?= $this->endSection() ?>

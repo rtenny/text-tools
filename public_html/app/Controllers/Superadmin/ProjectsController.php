@@ -86,9 +86,16 @@ class ProjectsController extends BaseController
             return redirect()->to('superadmin/projects')->with('error', 'Project not found.');
         }
 
+        // Get towns data
+        $townService = new \App\Services\TownService();
+        $allTowns = $townService->getAllAvailableTowns();
+        $assignedTownIds = $townService->getTownIdsForProject($id);
+
         $data = [
             'title' => 'Edit Project',
             'project' => $project,
+            'allTowns' => $allTowns,
+            'assignedTownIds' => $assignedTownIds,
         ];
 
         return view('superadmin/projects/edit', $data);
@@ -164,6 +171,42 @@ class ProjectsController extends BaseController
             return redirect()->to('superadmin/projects')->with('success', 'Project deleted successfully.');
         } else {
             return redirect()->to('superadmin/projects')->with('error', 'Failed to delete project. Please try again.');
+        }
+    }
+
+    /**
+     * Assign towns to a project
+     */
+    public function assignTowns($id)
+    {
+        if ($this->request->getMethod() !== 'post') {
+            return redirect()->to('superadmin/projects/edit/' . $id)->with('error', 'Invalid request.');
+        }
+
+        $project = $this->projectModel->find($id);
+
+        if (!$project) {
+            return redirect()->to('superadmin/projects')->with('error', 'Project not found.');
+        }
+
+        $townIds = $this->request->getPost('town_ids');
+
+        // Ensure $townIds is an array (it will be null if nothing is selected)
+        if (!is_array($townIds)) {
+            $townIds = [];
+        }
+
+        $townService = new \App\Services\TownService();
+        $success = $townService->assignTownsToProject($id, $townIds);
+
+        if ($success) {
+            $count = count($townIds);
+            $message = $count > 0
+                ? "Successfully assigned {$count} town(s) to this project."
+                : "Successfully removed all towns from this project.";
+            return redirect()->to('superadmin/projects/edit/' . $id)->with('success', $message);
+        } else {
+            return redirect()->to('superadmin/projects/edit/' . $id)->with('error', 'Failed to assign towns. Please try again.');
         }
     }
 }
