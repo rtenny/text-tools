@@ -131,12 +131,19 @@
                     <label for="location" class="form-label">Location *</label>
                     <select name="location" id="location" class="form-select" required>
                         <option value="">Please select...</option>
-                        <option value="Alicante">Alicante</option>
-                        <option value="Benidorm">Benidorm</option>
-                        <option value="Calpe">Calpe</option>
-                        <option value="Denia">Denia</option>
-                        <option value="Torrevieja">Torrevieja</option>
+                        <?php if (!empty($towns)): ?>
+                            <?php foreach ($towns as $town): ?>
+                                <option value="<?= esc($town['name']) ?>"><?= esc($town['name']) ?></option>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <option value="" disabled>No towns available for this project</option>
+                        <?php endif; ?>
                     </select>
+                    <?php if (empty($towns)): ?>
+                        <p class="text-xs text-red-400 mt-1">
+                            No towns have been assigned to this project yet. Contact your administrator.
+                        </p>
+                    <?php endif; ?>
                 </div>
 
                 <!-- Property Type -->
