@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function showError(elementId, message) {
         var el = document.getElementById(elementId);
         if (el) {
-            el.textContent = '⚠️ ' + message;
+            el.textContent = message;
             el.style.display = 'block';
         }
     }
@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function () {
             hideError('error-message-translator');
 
             btn.disabled = true;
-            btn.textContent = '⏳ Translating...';
+            btn.textContent = 'Translating...';
 
             // Get all translation boxes in this tab
             var boxes = document.querySelectorAll('#translator .translation-box');
@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 showError('error-message-translator', err.message);
             }).finally(function () {
                 btn.disabled = false;
-                btn.textContent = '🌐 Translate to All Languages';
+                btn.textContent = 'Translate to All Languages';
             });
         });
     }
@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             hideError('error-message-rewriter');
             rewriteBtn.disabled = true;
-            rewriteBtn.textContent = '⏳ Rewriting...';
+            rewriteBtn.textContent = 'Rewriting...';
 
             // Step 1: Rewrite
             showSpinner('box-rewritten');
@@ -228,7 +228,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 showError('error-message-rewriter', err.message);
             }).finally(function () {
                 rewriteBtn.disabled = false;
-                rewriteBtn.textContent = '✨ Rewrite & Translate';
+                rewriteBtn.textContent = 'Rewrite & Translate';
             });
         });
     }
@@ -245,7 +245,7 @@ document.addEventListener('DOMContentLoaded', function () {
             hideError('error-message-generator');
 
             btn.disabled = true;
-            btn.textContent = '⏳ Generating...';
+            btn.textContent = 'Generating...';
 
             // Collect form data
             var formFields = {
@@ -289,7 +289,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 showError('error-message-generator', err.message);
             }).finally(function () {
                 btn.disabled = false;
-                btn.textContent = '📝 Generate Description';
+                btn.textContent = 'Generate Description';
             });
         });
     }
