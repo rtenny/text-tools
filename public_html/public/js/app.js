@@ -66,6 +66,14 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             return response.json();
         }).then(function (data) {
+            // Check if session has expired
+            if (data.session_expired === true) {
+                // Redirect to login page
+                window.location.href = window.BASE_URL + 'login';
+                // Reject the promise to prevent further processing
+                return Promise.reject(new Error('Session expired'));
+            }
+
             // Update CSRF token if returned in response body
             if (data.csrf_token) {
                 window.CSRF_TOKEN_HASH = data.csrf_token;

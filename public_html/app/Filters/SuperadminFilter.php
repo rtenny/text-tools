@@ -23,14 +23,34 @@ class SuperadminFilter implements FilterInterface
     public function before(RequestInterface $request, $arguments = null)
     {
         $session = session();
+        $isAjax = $request->isAJAX();
 
         // Check if user is logged in
         if (!$session->has('user_id')) {
+            if ($isAjax) {
+                return service('response')
+                    ->setStatusCode(401)
+                    ->setJSON([
+                        'success' => false,
+                        'error' => 'Please log in to access this page.',
+                        'session_expired' => true
+                    ]);
+            }
+
             return redirect()->to('/login')->with('error', 'Please log in to access this page.');
         }
 
         // Check if user is superadmin
         if ($session->get('role') !== 'superadmin') {
+            if ($isAjax) {
+                return service('response')
+                    ->setStatusCode(403)
+                    ->setJSON([
+                        'success' => false,
+                        'error' => 'Access denied. Superadmin privileges required.'
+                    ]);
+            }
+
             $role = $session->get('role');
 
             if ($role === 'admin') {

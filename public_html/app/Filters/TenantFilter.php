@@ -24,6 +24,7 @@ class TenantFilter implements FilterInterface
     public function before(RequestInterface $request, $arguments = null)
     {
         $session = session();
+        $isAjax = $request->isAJAX();
 
         // Only inject project context for admins and users (not superadmins)
         $role = $session->get('role');
@@ -35,6 +36,17 @@ class TenantFilter implements FilterInterface
             if (empty($projectId)) {
                 log_message('error', 'User ' . $session->get('user_id') . ' has no project_id assigned');
                 $session->destroy();
+
+                if ($isAjax) {
+                    return service('response')
+                        ->setStatusCode(403)
+                        ->setJSON([
+                            'success' => false,
+                            'error' => 'Your account is not properly configured. Please contact an administrator.',
+                            'session_expired' => true
+                        ]);
+                }
+
                 return redirect()->to('/login')->with('error', 'Your account is not properly configured. Please contact an administrator.');
             }
 

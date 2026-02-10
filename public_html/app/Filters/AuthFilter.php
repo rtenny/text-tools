@@ -23,15 +23,37 @@ class AuthFilter implements FilterInterface
     public function before(RequestInterface $request, $arguments = null)
     {
         $session = session();
+        $isAjax = $request->isAJAX();
 
         // Check if user is logged in
         if (!$session->has('user_id')) {
+            if ($isAjax) {
+                return service('response')
+                    ->setStatusCode(401)
+                    ->setJSON([
+                        'success' => false,
+                        'error' => 'Your session has expired. Please log in again.',
+                        'session_expired' => true
+                    ]);
+            }
+
             $session->set('intended_url', current_url());
             return redirect()->to('/login')->with('error', 'Please log in to access this page.');
         }
 
         // Check if user account is still active
         if (!$session->get('is_active')) {
+            if ($isAjax) {
+                $session->destroy();
+                return service('response')
+                    ->setStatusCode(401)
+                    ->setJSON([
+                        'success' => false,
+                        'error' => 'Your account has been deactivated. Please contact an administrator.',
+                        'session_expired' => true
+                    ]);
+            }
+
             $session->destroy();
             return redirect()->to('/login')->with('error', 'Your account has been deactivated. Please contact an administrator.');
         }
