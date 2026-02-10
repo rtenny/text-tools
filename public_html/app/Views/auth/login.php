@@ -33,7 +33,7 @@
 
     <!-- Submit Button -->
     <button type="submit" class="btn-primary">
-        🔓 Sign In
+        Sign In
     </button>
 </form>
 
@@ -47,7 +47,7 @@
 <!-- Demo Credentials (Development Only) -->
 <?php if (ENVIRONMENT === 'development'): ?>
     <div class="mt-6 p-4 bg-yellow-900 bg-opacity-20 border border-yellow-500 rounded-lg">
-        <p class="text-xs text-yellow-200 font-semibold mb-2">🔧 Development Mode - Demo Credentials:</p>
+        <p class="text-xs text-yellow-200 font-semibold mb-2">Development Mode - Demo Credentials:</p>
         <div class="text-xs text-gray-300 space-y-1">
             <p><strong>Superadmin:</strong> admin@texttools.local / admin123</p>
         </div>
