@@ -179,8 +179,9 @@ class ProjectsController extends BaseController
      */
     public function assignTowns($id)
     {
-        if ($this->request->getMethod() !== 'post') {
-            return redirect()->to('superadmin/projects/edit/' . $id)->with('error', 'Invalid request.');
+        // Validate request method using CodeIgniter's built-in method
+        if (!$this->request->is('post')) {
+            return redirect()->to('superadmin/projects/edit/' . $id)->with('error', 'Invalid request method.');
         }
 
         $project = $this->projectModel->find($id);
