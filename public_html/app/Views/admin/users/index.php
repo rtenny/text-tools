@@ -4,8 +4,8 @@
 
 <div class="flex items-center justify-between mb-6">
     <h1 class="text-3xl font-bold text-white">Manage Users</h1>
-    <a href="<?= base_url('admin/users/create') ?>" class="btn-primary">
-        ➕ Add User
+    <a href="<?= base_url('admin/users/create') ?>" class="btn-primary flex items-center">
+        <i data-lucide="user-plus" class="w-4 h-4 mr-2"></i> Add User
     </a>
 </div>
 
@@ -48,8 +48,8 @@
                             <td class="text-sm text-gray-400"><?= date('M d, Y', strtotime($user['created_at'])) ?></td>
                             <td>
                                 <a href="<?= base_url('admin/users/password-reset-link/' . $user['id']) ?>"
-                                   class="text-indigo-400 hover:text-indigo-300 text-sm">
-                                    🔑 Reset Link
+                                   class="text-[#D4AF37] hover:text-[#C29F2F] text-sm flex items-center">
+                                    <i data-lucide="key" class="w-4 h-4 mr-1"></i> Reset Link
                                 </a>
                             </td>
                         </tr>

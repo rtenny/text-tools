@@ -3,8 +3,8 @@
 <?= $this->section('content') ?>
 
 <div class="mb-6">
-    <a href="<?= base_url('admin/users') ?>" class="text-indigo-400 hover:text-indigo-300">
-        ← Back to Users
+    <a href="<?= base_url('admin/users') ?>" class="text-[#D4AF37] hover:text-[#C29F2F] flex items-center w-fit">
+        <i data-lucide="arrow-left" class="w-4 h-4 mr-1"></i> Back to Users
     </a>
 </div>
 
@@ -53,15 +53,23 @@
 
         <!-- Info Box -->
         <div class="bg-blue-900 bg-opacity-20 border border-blue-500 rounded-lg p-4 mb-6">
-            <p class="text-sm text-blue-200">
-                ℹ️ The user will be assigned to your project and will have access to the translation tools.
-            </p>
+            <div class="flex items-start">
+                <i data-lucide="lightbulb" class="w-6 h-6 mr-3 text-[#D4AF37] flex-shrink-0"></i>
+                <div>
+                    <p class="text-sm text-blue-200">
+                        <strong>User Access:</strong>
+                    </p>
+                    <p class="text-sm text-gray-300 mt-1">
+                        The user will be assigned to your project and will have access to the translation tools.
+                    </p>
+                </div>
+            </div>
         </div>
 
         <!-- Buttons -->
-        <div class="flex items-center space-x-4">
-            <button type="submit" class="btn-primary">
-                ✅ Create User
+        <div class="flex space-x-3">
+            <button type="submit" class="btn-primary flex items-center">
+                <i data-lucide="user-plus" class="w-4 h-4 mr-2"></i> Create User
             </button>
             <a href="<?= base_url('admin/users') ?>" class="btn-secondary">
                 Cancel

@@ -39,7 +39,7 @@
     <div class="w-full max-w-2xl">
         <div class="card p-8">
             <div class="flex items-center mb-6">
-                <span class="text-4xl mr-4">🔑</span>
+                <i data-lucide="key" class="w-10 h-10 mr-4 text-[#D4AF37]"></i>
                 <div>
                     <h1 class="text-2xl font-bold text-white">Password Reset Link</h1>
                     <p class="text-gray-400 text-sm mt-1">For: <?= esc($user['email']) ?></p>
@@ -56,15 +56,16 @@
                            readonly>
                     <button onclick="copyResetLink()"
                             id="copy-button"
-                            class="btn-primary whitespace-nowrap">
-                        📋 Copy Link
+                            class="btn-primary whitespace-nowrap flex items-center">
+                        <i data-lucide="copy" class="w-4 h-4 mr-2"></i> Copy Link
                     </button>
                 </div>
             </div>
 
             <div class="bg-yellow-900 bg-opacity-20 border border-yellow-500 rounded-lg p-4 mb-6">
-                <p class="text-sm text-yellow-200">
-                    <strong>⚠️ Important:</strong> This link expires in 1 hour. Share it with the admin immediately.
+                <p class="text-sm text-yellow-200 flex items-start">
+                    <i data-lucide="alert-triangle" class="w-4 h-4 mr-2 mt-0.5 flex-shrink-0"></i>
+                    <span><strong>Important:</strong> This link expires in 1 hour. Share it with the admin immediately.</span>
                 </p>
             </div>
 

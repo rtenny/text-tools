@@ -7,16 +7,16 @@
         <h3 class="text-xl font-semibold text-white">Project Admins</h3>
         <p class="text-gray-400 text-sm mt-1">Manage administrators for all projects</p>
     </div>
-    <a href="<?= base_url('superadmin/users/create') ?>" class="btn-primary">
-        ➕ Create New Admin
+    <a href="<?= base_url('superadmin/users/create') ?>" class="btn-primary flex items-center">
+        <i data-lucide="user-plus" class="w-4 h-4 mr-2"></i> Create New Admin
     </a>
 </div>
 
 <!-- Display password reset link after admin creation -->
 <?php if (session()->has('reset_link')): ?>
-    <div class="card p-6 mb-6 border-indigo-500">
+    <div class="card p-6 mb-6 border-[#D4AF37]">
         <div class="flex items-start">
-            <span class="text-2xl mr-3">🔑</span>
+            <i data-lucide="key" class="w-8 h-8 mr-3 text-[#D4AF37] flex-shrink-0"></i>
             <div class="flex-1">
                 <h4 class="text-lg font-semibold text-white mb-2">Admin Created Successfully!</h4>
                 <p class="text-sm text-gray-300 mb-3">
@@ -29,8 +29,8 @@
                            class="form-input font-mono text-sm"
                            readonly>
                     <button onclick="copyResetLink()"
-                            class="btn-primary whitespace-nowrap">
-                        📋 Copy Link
+                            class="btn-primary whitespace-nowrap flex items-center">
+                        <i data-lucide="copy" class="w-4 h-4 mr-2"></i> Copy Link
                     </button>
                 </div>
                 <p class="text-xs text-gray-500 mt-2">
@@ -87,9 +87,9 @@
                             </td>
                             <td>
                                 <a href="<?= base_url('superadmin/users/password-reset-link/' . $admin['id']) ?>"
-                                   class="text-indigo-400 hover:text-indigo-300 text-sm"
+                                   class="text-[#D4AF37] hover:text-[#C29F2F] text-sm flex items-center"
                                    target="_blank">
-                                    🔑 Reset Password
+                                    <i data-lucide="key" class="w-4 h-4 mr-1"></i> Reset Password
                                 </a>
                             </td>
                         </tr>
@@ -99,11 +99,13 @@
         </div>
     <?php else: ?>
         <div class="text-center py-12">
-            <div class="text-6xl mb-4">👨‍💼</div>
+            <div class="flex justify-center mb-4">
+                <i data-lucide="user-cog" class="w-16 h-16 text-gray-600"></i>
+            </div>
             <h3 class="text-xl font-semibold text-white mb-2">No Admins Yet</h3>
             <p class="text-gray-400 mb-6">Create your first project administrator to manage a project.</p>
-            <a href="<?= base_url('superadmin/users/create') ?>" class="btn-primary inline-block">
-                ➕ Create Your First Admin
+            <a href="<?= base_url('superadmin/users/create') ?>" class="btn-primary inline-flex items-center">
+                <i data-lucide="user-plus" class="w-4 h-4 mr-2"></i> Create Your First Admin
             </a>
         </div>
     <?php endif; ?>
@@ -118,14 +120,16 @@ function copyResetLink() {
     input.select();
     document.execCommand('copy');
 
-    const button = event.target;
+    const button = event.target.closest('button');
     const originalText = button.innerHTML;
-    button.innerHTML = '✅ Copied!';
+    button.innerHTML = '<i data-lucide="check-circle" class="w-4 h-4 mr-2"></i> Copied!';
     button.classList.add('bg-green-600');
+    lucide.createIcons();
 
     setTimeout(() => {
         button.innerHTML = originalText;
         button.classList.remove('bg-green-600');
+        lucide.createIcons();
     }, 2000);
 }
 </script>

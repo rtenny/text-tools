@@ -3,8 +3,8 @@
 <?= $this->section('content') ?>
 
 <div class="mb-6">
-    <a href="<?= base_url('superadmin/projects') ?>" class="text-indigo-400 hover:text-indigo-300 text-sm">
-        ← Back to Projects
+    <a href="<?= base_url('superadmin/projects') ?>" class="text-[#D4AF37] hover:text-[#C29F2F] text-sm flex items-center w-fit">
+        <i data-lucide="arrow-left" class="w-4 h-4 mr-1"></i> Back to Projects
     </a>
 </div>
 
@@ -84,14 +84,14 @@
             <!-- Languages (Fixed - Display Only) -->
             <div class="mb-6">
                 <label class="form-label">Supported Languages</label>
-                <div class="p-4 bg-[#0f1419] rounded-lg border border-[#2d3561]">
+                <div class="p-4 bg-[#1A1C1E] rounded-lg border border-[#3a3d42]">
                     <div class="flex space-x-4">
                         <?php
                             $languages = is_string($project['languages']) ? json_decode($project['languages'], true) : $project['languages'];
                             $langLabels = [
-                                'en' => '🇬🇧 English (EN)',
-                                'de' => '🇩🇪 German (DE)',
-                                'es' => '🇪🇸 Spanish (ES)'
+                                'en' => 'English (EN)',
+                                'de' => 'German (DE)',
+                                'es' => 'Spanish (ES)'
                             ];
                             foreach ($languages as $lang): ?>
                                 <span class="badge badge-info"><?= $langLabels[$lang] ?? strtoupper($lang) ?></span>
@@ -102,8 +102,8 @@
 
             <!-- Submit Buttons -->
             <div class="flex space-x-3">
-                <button type="submit" class="btn-primary">
-                    💾 Update Project
+                <button type="submit" class="btn-primary flex items-center">
+                    <i data-lucide="save" class="w-4 h-4 mr-2"></i> Update Project
                 </button>
                 <a href="<?= base_url('superadmin/projects') ?>" class="btn-secondary">
                     Cancel

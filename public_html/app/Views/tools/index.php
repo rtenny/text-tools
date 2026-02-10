@@ -3,10 +3,10 @@
 <?= $this->section('content') ?>
 
 <!-- Tab Navigation -->
-<div class="tabs flex mb-6 border-b border-[#2d3561]">
-    <button class="tab-button active" data-tab="translator">🌐 Translator</button>
-    <button class="tab-button" data-tab="rewriter">✨ Rewriter</button>
-    <button class="tab-button" data-tab="generator">📝 Generator</button>
+<div class="tabs flex mb-6 border-b border-[#3a3d42]">
+    <button class="tab-button active flex items-center" data-tab="translator"><i data-lucide="globe" class="w-4 h-4 mr-2"></i> Translator</button>
+    <button class="tab-button flex items-center" data-tab="rewriter"><i data-lucide="wand-2" class="w-4 h-4 mr-2"></i> Rewriter</button>
+    <button class="tab-button flex items-center" data-tab="generator"><i data-lucide="sparkles" class="w-4 h-4 mr-2"></i> Generator</button>
 </div>
 
 <!-- ============================================================ -->
@@ -21,31 +21,31 @@
 
         <form id="translation-form">
             <div class="mb-4">
-                <label for="source_text_translator" class="form-label">🇬🇧 English Source Text</label>
+                <label for="source_text_translator" class="form-label">English Source Text</label>
                 <textarea name="source_text" id="source_text_translator" class="form-textarea" rows="8" placeholder="Enter your English property description here..." required></textarea>
             </div>
 
-            <button type="submit" class="btn-primary" id="translate-btn">🌐 Translate to All Languages</button>
+            <button type="submit" class="btn-primary flex items-center justify-center" id="translate-btn"><i data-lucide="globe" class="w-4 h-4 mr-2"></i> Translate to All Languages</button>
         </form>
 
-        <hr class="border-[#2d3561] my-6">
+        <hr class="border-[#3a3d42] my-6">
 
         <h3 class="text-lg font-semibold text-white mb-4">Translations</h3>
 
         <div class="translations-grid grid grid-cols-1 md:grid-cols-2 gap-6">
             <?php
             $langLabels = [
-                'de' => ['flag' => '🇩🇪', 'name' => 'German'],
-                'es' => ['flag' => '🇪🇸', 'name' => 'Spanish (European)'],
+                'de' => 'German',
+                'es' => 'Spanish (European)',
             ];
             foreach ($languages as $lang):
                 if ($lang === 'en') continue;
-                $info = $langLabels[$lang] ?? ['flag' => '🌍', 'name' => strtoupper($lang)];
+                $langName = $langLabels[$lang] ?? strtoupper($lang);
             ?>
             <div class="translation-box" id="box-<?= $lang ?>-translator" data-lang="<?= $lang ?>">
                 <div class="flex justify-between items-center mb-2">
-                    <label class="form-label mb-0"><span class="flag"><?= $info['flag'] ?></span> <?= $info['name'] ?></label>
-                    <button type="button" class="copy-btn text-xs text-indigo-400 hover:text-indigo-300" data-target="output-<?= $lang ?>-translator" style="display: none;">📋 Copy</button>
+                    <label class="form-label mb-0"><?= $langName ?></label>
+                    <button type="button" class="copy-btn text-xs text-[#D4AF37] hover:text-[#C29F2F]" data-target="output-<?= $lang ?>-translator" style="display: none;"><i data-lucide="copy" class="w-3 h-3 mr-1 inline"></i> Copy</button>
                 </div>
                 <div class="spinner-overlay">
                     <div class="spinner"></div>
@@ -70,14 +70,14 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
             <div>
-                <label for="original_text_rewriter" class="form-label">🇬🇧 Original English Description</label>
+                <label for="original_text_rewriter" class="form-label">Original English Description</label>
                 <textarea name="original_text" id="original_text_rewriter" class="form-textarea" rows="8" placeholder="Paste your original English property description here..." required></textarea>
             </div>
 
             <div class="translation-box" id="box-rewritten">
                 <div class="flex justify-between items-center mb-2">
-                    <label class="form-label mb-0">🇬🇧 Rewritten English Description</label>
-                    <button type="button" class="copy-btn text-xs text-indigo-400 hover:text-indigo-300" data-target="output-rewritten" style="display: none;">📋 Copy</button>
+                    <label class="form-label mb-0">Rewritten English Description</label>
+                    <button type="button" class="copy-btn text-xs text-[#D4AF37] hover:text-[#C29F2F]" data-target="output-rewritten" style="display: none;"><i data-lucide="copy" class="w-3 h-3 mr-1 inline"></i> Copy</button>
                 </div>
                 <div class="spinner-overlay">
                     <div class="spinner"></div>
@@ -87,21 +87,21 @@
             </div>
         </div>
 
-        <button type="button" class="btn-primary" id="rewrite-btn">✨ Rewrite & Translate</button>
+        <button type="button" class="btn-primary" id="rewrite-btn"><i data-lucide="wand-2" class="w-4 h-4 mr-2 inline"></i> Rewrite & Translate</button>
 
-        <hr class="border-[#2d3561] my-6">
+        <hr class="border-[#3a3d42] my-6">
 
         <h3 class="text-lg font-semibold text-white mb-4">Translations</h3>
 
         <div class="translations-grid grid grid-cols-1 md:grid-cols-2 gap-6">
             <?php foreach ($languages as $lang):
                 if ($lang === 'en') continue;
-                $info = $langLabels[$lang] ?? ['flag' => '🌍', 'name' => strtoupper($lang)];
+                $langName = $langLabels[$lang] ?? strtoupper($lang);
             ?>
             <div class="translation-box" id="box-<?= $lang ?>-rewriter" data-lang="<?= $lang ?>">
                 <div class="flex justify-between items-center mb-2">
-                    <label class="form-label mb-0"><span class="flag"><?= $info['flag'] ?></span> <?= $info['name'] ?></label>
-                    <button type="button" class="copy-btn text-xs text-indigo-400 hover:text-indigo-300" data-target="output-<?= $lang ?>-rewriter" style="display: none;">📋 Copy</button>
+                    <label class="form-label mb-0"><?= $langName ?></label>
+                    <button type="button" class="copy-btn text-xs text-[#D4AF37] hover:text-[#C29F2F]" data-target="output-<?= $lang ?>-rewriter" style="display: none;"><i data-lucide="copy" class="w-3 h-3 mr-1 inline"></i> Copy</button>
                 </div>
                 <div class="spinner-overlay">
                     <div class="spinner"></div>
@@ -129,7 +129,14 @@
                 <!-- Location -->
                 <div>
                     <label for="location" class="form-label">Location *</label>
-                    <input type="text" name="location" id="location" class="form-input" placeholder="e.g. Port d'Andratx, Mallorca" required>
+                    <select name="location" id="location" class="form-select" required>
+                        <option value="">Please select...</option>
+                        <option value="Alicante">Alicante</option>
+                        <option value="Benidorm">Benidorm</option>
+                        <option value="Calpe">Calpe</option>
+                        <option value="Denia">Denia</option>
+                        <option value="Torrevieja">Torrevieja</option>
+                    </select>
                 </div>
 
                 <!-- Property Type -->
@@ -155,6 +162,9 @@
                         <option value="3">3</option>
                         <option value="4">4</option>
                         <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
                     </select>
                 </div>
 
@@ -166,6 +176,11 @@
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
                     </select>
                 </div>
 
@@ -188,18 +203,18 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn-primary" id="generate-btn">📝 Generate Description</button>
+            <button type="submit" class="btn-primary" id="generate-btn"><i data-lucide="sparkles" class="w-4 h-4 mr-2 inline"></i> Generate Description</button>
         </form>
 
-        <hr class="border-[#2d3561] my-6">
+        <hr class="border-[#3a3d42] my-6">
 
         <h3 class="text-lg font-semibold text-white mb-4">Generated Description</h3>
 
         <!-- English Output -->
         <div class="translation-box mb-6" id="box-en-generator">
             <div class="flex justify-between items-center mb-2">
-                <label class="form-label mb-0">🇬🇧 English Description</label>
-                <button type="button" class="copy-btn text-xs text-indigo-400 hover:text-indigo-300" data-target="output-en-generator" style="display: none;">📋 Copy</button>
+                <label class="form-label mb-0">English Description</label>
+                <button type="button" class="copy-btn text-xs text-[#D4AF37] hover:text-[#C29F2F]" data-target="output-en-generator" style="display: none;"><i data-lucide="copy" class="w-3 h-3 mr-1 inline"></i> Copy</button>
             </div>
             <div class="spinner-overlay">
                 <div class="spinner"></div>
@@ -213,12 +228,12 @@
         <div class="translations-grid grid grid-cols-1 md:grid-cols-2 gap-6">
             <?php foreach ($languages as $lang):
                 if ($lang === 'en') continue;
-                $info = $langLabels[$lang] ?? ['flag' => '🌍', 'name' => strtoupper($lang)];
+                $langName = $langLabels[$lang] ?? strtoupper($lang);
             ?>
             <div class="translation-box" id="box-<?= $lang ?>-generator" data-lang="<?= $lang ?>">
                 <div class="flex justify-between items-center mb-2">
-                    <label class="form-label mb-0"><span class="flag"><?= $info['flag'] ?></span> <?= $info['name'] ?></label>
-                    <button type="button" class="copy-btn text-xs text-indigo-400 hover:text-indigo-300" data-target="output-<?= $lang ?>-generator" style="display: none;">📋 Copy</button>
+                    <label class="form-label mb-0"><?= $langName ?></label>
+                    <button type="button" class="copy-btn text-xs text-[#D4AF37] hover:text-[#C29F2F]" data-target="output-<?= $lang ?>-generator" style="display: none;"><i data-lucide="copy" class="w-3 h-3 mr-1 inline"></i> Copy</button>
                 </div>
                 <div class="spinner-overlay">
                     <div class="spinner"></div>

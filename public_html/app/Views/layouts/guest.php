@@ -5,30 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= esc($title ?? 'Login') ?> - Property Text Tools</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
+        /* Luxury Slate Theme */
         body {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            background: linear-gradient(135deg, #1A1C1E 0%, #25282C 100%);
             min-height: 100vh;
         }
         .card {
-            background-color: #16213e;
-            border: 1px solid #2d3561;
+            background-color: #25282C;
+            border: 1px solid #3a3d42;
             border-radius: 8px;
         }
         .btn-primary {
-            background-color: #6366f1;
-            color: white;
+            background-color: #D4AF37;
+            color: #1A1C1E;
             padding: 0.75rem 1.5rem;
             border-radius: 6px;
-            transition: background-color 0.2s;
+            font-weight: 600;
+            transition: all 0.2s;
             width: 100%;
         }
         .btn-primary:hover {
-            background-color: #4f46e5;
+            background-color: #C29F2F;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.25);
         }
         .form-input {
-            background-color: #0f1419;
-            border: 1px solid #2d3561;
+            background-color: #1A1C1E;
+            border: 1px solid #3a3d42;
             color: #e0e0e0;
             padding: 0.75rem;
             border-radius: 6px;
@@ -36,10 +40,11 @@
         }
         .form-input:focus {
             outline: none;
-            border-color: #6366f1;
+            border-color: #D4AF37;
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
         }
         .form-label {
-            color: #a0a0c0;
+            color: #a8adb5;
             font-size: 0.875rem;
             margin-bottom: 0.5rem;
             display: block;
@@ -60,9 +65,9 @@
             color: #d1fae5;
         }
         .alert-info {
-            background-color: #1e3a8a;
-            border: 1px solid #3b82f6;
-            color: #dbeafe;
+            background-color: #2a2d31;
+            border: 1px solid #D4AF37;
+            color: #f5e6c8;
         }
     </style>
     <?= $this->renderSection('styles') ?>
@@ -72,7 +77,7 @@
         <!-- Logo/Header -->
         <div class="text-center mb-8">
             <h1 class="text-3xl font-bold text-white flex items-center justify-center">
-                <span class="mr-2">🏠</span>
+                <i data-lucide="building-2" class="mr-2 w-8 h-8"></i>
                 Property Text Tools
             </h1>
             <p class="text-gray-400 mt-2">AI-Powered Property Descriptions</p>
@@ -120,5 +125,28 @@
     </div>
 
     <?= $this->renderSection('scripts') ?>
+    <script>
+        lucide.createIcons();
+
+        // Auto-fade success and info messages after 5 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            const successAlerts = document.querySelectorAll('.alert-success, .alert-info');
+
+            successAlerts.forEach(function(alert) {
+                // Add transition for smooth fade
+                alert.style.transition = 'opacity 0.5s ease-out';
+
+                // Fade out after 5 seconds
+                setTimeout(function() {
+                    alert.style.opacity = '0';
+
+                    // Remove from DOM after fade completes
+                    setTimeout(function() {
+                        alert.remove();
+                    }, 500);
+                }, 5000);
+            });
+        });
+    </script>
 </body>
 </html>

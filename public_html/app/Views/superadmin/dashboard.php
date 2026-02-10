@@ -11,7 +11,7 @@
                 <p class="text-gray-400 text-sm mb-1">Total Projects</p>
                 <p class="text-3xl font-bold text-white"><?= $totalProjects ?></p>
             </div>
-            <div class="text-4xl">📁</div>
+            <div><i data-lucide="folder" class="w-10 h-10 text-[#D4AF37]"></i></div>
         </div>
         <div class="mt-4">
             <span class="badge badge-success"><?= $activeProjects ?> Active</span>
@@ -28,10 +28,10 @@
                 <p class="text-gray-400 text-sm mb-1">Project Admins</p>
                 <p class="text-3xl font-bold text-white"><?= $totalAdmins ?></p>
             </div>
-            <div class="text-4xl">👨‍💼</div>
+            <div><i data-lucide="user-cog" class="w-10 h-10 text-[#D4AF37]"></i></div>
         </div>
         <div class="mt-4">
-            <a href="<?= base_url('superadmin/users') ?>" class="text-indigo-400 text-sm hover:underline">Manage Admins →</a>
+            <a href="<?= base_url('superadmin/users') ?>" class="text-[#D4AF37] text-sm hover:underline">Manage Admins →</a>
         </div>
     </div>
 
@@ -42,7 +42,7 @@
                 <p class="text-gray-400 text-sm mb-1">Total Users</p>
                 <p class="text-3xl font-bold text-white"><?= $totalUsers ?></p>
             </div>
-            <div class="text-4xl">👥</div>
+            <div><i data-lucide="users" class="w-10 h-10 text-[#D4AF37]"></i></div>
         </div>
         <div class="mt-4">
             <span class="text-gray-400 text-sm">Across all projects</span>
@@ -56,7 +56,7 @@
                 <p class="text-gray-400 text-sm mb-1">System Status</p>
                 <p class="text-lg font-bold text-green-400">All Systems Operational</p>
             </div>
-            <div class="text-4xl">✅</div>
+            <div><i data-lucide="check-circle" class="w-10 h-10 text-green-400"></i></div>
         </div>
         <div class="mt-4">
             <span class="text-gray-400 text-xs">Last checked: <?= date('H:i:s') ?></span>
@@ -70,13 +70,13 @@
     <div class="card p-6">
         <div class="flex items-center justify-between mb-4">
             <h3 class="text-lg font-semibold text-white">Recent Projects</h3>
-            <a href="<?= base_url('superadmin/projects') ?>" class="text-indigo-400 text-sm hover:underline">View All →</a>
+            <a href="<?= base_url('superadmin/projects') ?>" class="text-[#D4AF37] text-sm hover:underline">View All →</a>
         </div>
 
         <?php if (!empty($recentProjects)): ?>
             <div class="space-y-3">
                 <?php foreach ($recentProjects as $project): ?>
-                    <div class="flex items-center justify-between p-3 bg-[#0f1419] rounded-lg">
+                    <div class="flex items-center justify-between p-3 bg-[#1A1C1E] rounded-lg">
                         <div class="flex-1">
                             <p class="font-medium text-white"><?= esc($project['name']) ?></p>
                             <p class="text-xs text-gray-400 mt-1">
@@ -95,7 +95,7 @@
                 <?php endforeach; ?>
             </div>
         <?php else: ?>
-            <p class="text-gray-400 text-center py-8">No projects yet. <a href="<?= base_url('superadmin/projects/create') ?>" class="text-indigo-400 hover:underline">Create your first project</a></p>
+            <p class="text-gray-400 text-center py-8">No projects yet. <a href="<?= base_url('superadmin/projects/create') ?>" class="text-[#D4AF37] hover:underline">Create your first project</a></p>
         <?php endif; ?>
     </div>
 
@@ -103,13 +103,13 @@
     <div class="card p-6">
         <div class="flex items-center justify-between mb-4">
             <h3 class="text-lg font-semibold text-white">Recent Admins</h3>
-            <a href="<?= base_url('superadmin/users') ?>" class="text-indigo-400 text-sm hover:underline">View All →</a>
+            <a href="<?= base_url('superadmin/users') ?>" class="text-[#D4AF37] text-sm hover:underline">View All →</a>
         </div>
 
         <?php if (!empty($recentAdmins)): ?>
             <div class="space-y-3">
                 <?php foreach ($recentAdmins as $admin): ?>
-                    <div class="flex items-center justify-between p-3 bg-[#0f1419] rounded-lg">
+                    <div class="flex items-center justify-between p-3 bg-[#1A1C1E] rounded-lg">
                         <div class="flex-1">
                             <p class="font-medium text-white"><?= esc($admin['first_name'] . ' ' . $admin['last_name']) ?></p>
                             <p class="text-xs text-gray-400 mt-1">
@@ -128,7 +128,7 @@
                 <?php endforeach; ?>
             </div>
         <?php else: ?>
-            <p class="text-gray-400 text-center py-8">No admins yet. <a href="<?= base_url('superadmin/users/create') ?>" class="text-indigo-400 hover:underline">Create your first admin</a></p>
+            <p class="text-gray-400 text-center py-8">No admins yet. <a href="<?= base_url('superadmin/users/create') ?>" class="text-[#D4AF37] hover:underline">Create your first admin</a></p>
         <?php endif; ?>
     </div>
 </div>
@@ -171,11 +171,11 @@
 
 <!-- Quick Actions -->
 <div class="mt-8 flex flex-wrap gap-4">
-    <a href="<?= base_url('superadmin/projects/create') ?>" class="btn-primary">
-        ➕ Create New Project
+    <a href="<?= base_url('superadmin/projects/create') ?>" class="btn-primary flex items-center justify-center">
+        <i data-lucide="plus-circle" class="w-4 h-4 mr-2"></i> Create New Project
     </a>
-    <a href="<?= base_url('superadmin/users/create') ?>" class="btn-secondary">
-        👤 Add New Admin
+    <a href="<?= base_url('superadmin/users/create') ?>" class="btn-secondary flex items-center justify-center">
+        <i data-lucide="user-plus" class="w-4 h-4 mr-2"></i> Add New Admin
     </a>
 </div>
 

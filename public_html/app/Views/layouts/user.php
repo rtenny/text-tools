@@ -12,15 +12,16 @@ $currentUser = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= esc($title ?? 'Text Tools') ?> - Property Text Tools</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="<?= base_url('css/app.css') ?>">
     <?= $this->renderSection('styles') ?>
 </head>
-<body class="bg-[#1a1a2e] text-[#e0e0e0] min-h-screen flex flex-col">
+<body class="bg-[#1A1C1E] text-[#e0e0e0] min-h-screen flex flex-col">
     <!-- Header -->
-    <header class="bg-[#16213e] border-b border-[#2d3561] px-6 py-4">
+    <header class="bg-[#25282C] border-b border-[#3a3d42] px-6 py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div class="flex items-center space-x-3">
-                <span class="text-2xl">🏠</span>
+                <i data-lucide="building-2" class="w-6 h-6"></i>
                 <div>
                     <h1 class="text-lg font-bold text-white">Property Text Tools</h1>
                     <p class="text-xs text-gray-400"><?= esc($projectName ?? 'User Panel') ?></p>
@@ -31,7 +32,7 @@ $currentUser = [
                     <?= esc($currentUser['first_name'] . ' ' . $currentUser['last_name']) ?>
                 </span>
                 <a href="<?= base_url('logout') ?>" class="text-red-400 hover:text-red-300 text-sm flex items-center">
-                    <span class="mr-1">🚪</span> Logout
+                    <i data-lucide="log-out" class="mr-1 w-4 h-4"></i> Logout
                 </a>
             </div>
         </div>
@@ -58,5 +59,28 @@ $currentUser = [
 
     <script src="<?= base_url('js/app.js') ?>"></script>
     <?= $this->renderSection('scripts') ?>
+    <script>
+        lucide.createIcons();
+
+        // Auto-fade success and info messages after 5 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            const successAlerts = document.querySelectorAll('.alert-success, .alert-info');
+
+            successAlerts.forEach(function(alert) {
+                // Add transition for smooth fade
+                alert.style.transition = 'opacity 0.5s ease-out';
+
+                // Fade out after 5 seconds
+                setTimeout(function() {
+                    alert.style.opacity = '0';
+
+                    // Remove from DOM after fade completes
+                    setTimeout(function() {
+                        alert.remove();
+                    }, 500);
+                }, 5000);
+            });
+        });
+    </script>
 </body>
 </html>

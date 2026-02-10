@@ -13,7 +13,7 @@
                 <p class="text-sm text-gray-400 mb-1">Total Users</p>
                 <p class="text-3xl font-bold text-white"><?= $totalUsers ?></p>
             </div>
-            <div class="text-4xl">👥</div>
+            <div><i data-lucide="users" class="w-10 h-10 text-[#D4AF37]"></i></div>
         </div>
     </div>
 </div>
@@ -22,8 +22,8 @@
 <div class="card p-6 mb-8">
     <div class="flex items-center justify-between mb-4">
         <h2 class="text-xl font-semibold text-white">Recent Users</h2>
-        <a href="<?= base_url('admin/users/create') ?>" class="btn-primary">
-            ➕ Add User
+        <a href="<?= base_url('admin/users/create') ?>" class="btn-primary flex items-center justify-center">
+            <i data-lucide="user-plus" class="w-4 h-4 mr-2"></i> Add User
         </a>
     </div>
 
@@ -56,8 +56,8 @@
                             <td class="text-sm text-gray-400"><?= date('M d, Y', strtotime($user['created_at'])) ?></td>
                             <td>
                                 <a href="<?= base_url('admin/users/password-reset-link/' . $user['id']) ?>"
-                                   class="text-indigo-400 hover:text-indigo-300 text-sm">
-                                    🔑 Reset Link
+                                   class="text-[#D4AF37] hover:text-[#C29F2F] text-sm flex items-center">
+                                    <i data-lucide="key" class="w-4 h-4 mr-1"></i> Reset Link
                                 </a>
                             </td>
                         </tr>
@@ -68,7 +68,7 @@
 
         <?php if (count($recentUsers) >= 5): ?>
             <div class="mt-4 text-center">
-                <a href="<?= base_url('admin/users') ?>" class="text-indigo-400 hover:text-indigo-300">
+                <a href="<?= base_url('admin/users') ?>" class="text-[#D4AF37] hover:text-[#C29F2F]">
                     View all users →
                 </a>
             </div>

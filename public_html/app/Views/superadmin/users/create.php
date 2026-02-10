@@ -3,8 +3,8 @@
 <?= $this->section('content') ?>
 
 <div class="mb-6">
-    <a href="<?= base_url('superadmin/users') ?>" class="text-indigo-400 hover:text-indigo-300 text-sm">
-        ← Back to Admins
+    <a href="<?= base_url('superadmin/users') ?>" class="text-[#D4AF37] hover:text-[#C29F2F] text-sm flex items-center w-fit">
+        <i data-lucide="arrow-left" class="w-4 h-4 mr-1"></i> Back to Admins
     </a>
 </div>
 
@@ -93,11 +93,11 @@
 
             <!-- Password Info -->
             <div class="mb-6">
-                <div class="p-4 bg-indigo-900 bg-opacity-20 rounded-lg border border-indigo-500">
+                <div class="p-4 bg-blue-900 bg-opacity-20 rounded-lg border border-blue-500">
                     <div class="flex items-start">
-                        <span class="text-2xl mr-3">🔑</span>
+                        <i data-lucide="key" class="w-6 h-6 mr-3 text-[#D4AF37] flex-shrink-0 mt-0.5"></i>
                         <div>
-                            <p class="text-sm text-indigo-200 font-semibold mb-2">Password Setup</p>
+                            <p class="text-sm text-blue-200 font-semibold mb-2">Password Setup</p>
                             <p class="text-sm text-gray-300">
                                 A temporary password will be auto-generated. After creating the admin,
                                 you'll receive a password reset link to share with them.
@@ -109,8 +109,8 @@
 
             <!-- Submit Buttons -->
             <div class="flex space-x-3">
-                <button type="submit" class="btn-primary">
-                    👤 Create Admin
+                <button type="submit" class="btn-primary flex items-center">
+                    <i data-lucide="user-plus" class="w-4 h-4 mr-2"></i> Create Admin
                 </button>
                 <a href="<?= base_url('superadmin/users') ?>" class="btn-secondary">
                     Cancel
@@ -120,9 +120,9 @@
     </div>
 
     <!-- Info Box -->
-    <div class="card p-4 mt-4 border-indigo-500">
+    <div class="card p-4 mt-4 border-[#D4AF37]">
         <div class="flex items-start">
-            <span class="text-2xl mr-3">💡</span>
+            <i data-lucide="lightbulb" class="w-6 h-6 mr-3 text-[#D4AF37] flex-shrink-0"></i>
             <div>
                 <p class="text-sm text-gray-300 mb-2">
                     <strong>Admin Permissions:</strong>

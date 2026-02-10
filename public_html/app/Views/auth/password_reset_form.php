@@ -35,21 +35,22 @@
     </div>
 
     <!-- Submit Button -->
-    <button type="submit" class="btn-primary">
-        🔒 Reset Password
+    <button type="submit" class="btn-primary flex items-center justify-center">
+        <i data-lucide="lock" class="w-4 h-4 mr-2"></i> Reset Password
     </button>
 </form>
 
 <!-- Additional Info -->
-<div class="mt-6 p-4 bg-indigo-900 bg-opacity-20 border border-indigo-500 rounded-lg">
-    <p class="text-xs text-indigo-200">
-        <strong>ℹ️ Security Note:</strong> After resetting your password, you'll be redirected to the login page where you can sign in with your new password.
+<div class="mt-6 p-4 bg-blue-900 bg-opacity-20 border border-blue-500 rounded-lg">
+    <p class="text-xs text-blue-200 flex items-start">
+        <i data-lucide="info" class="w-4 h-4 mr-2 mt-0.5 flex-shrink-0"></i>
+        <span><strong>Security Note:</strong> After resetting your password, you'll be redirected to the login page where you can sign in with your new password.</span>
     </p>
 </div>
 
 <div class="mt-4 text-center">
-    <a href="<?= base_url('login') ?>" class="text-sm text-indigo-400 hover:text-indigo-300">
-        ← Back to Login
+    <a href="<?= base_url('login') ?>" class="text-sm text-[#D4AF37] hover:text-[#C29F2F] flex items-center justify-center">
+        <i data-lucide="arrow-left" class="w-4 h-4 mr-1"></i> Back to Login
     </a>
 </div>
 

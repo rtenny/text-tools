@@ -3,8 +3,8 @@
 <?= $this->section('content') ?>
 
 <div class="mb-6">
-    <a href="<?= base_url('admin/users') ?>" class="text-indigo-400 hover:text-indigo-300">
-        ← Back to Users
+    <a href="<?= base_url('admin/users') ?>" class="text-[#D4AF37] hover:text-[#C29F2F] flex items-center w-fit">
+        <i data-lucide="arrow-left" class="w-4 h-4 mr-1"></i> Back to Users
     </a>
 </div>
 
@@ -21,10 +21,11 @@
     </div>
 
     <div class="bg-yellow-900 bg-opacity-20 border border-yellow-500 rounded-lg p-4 mb-6">
-        <p class="text-sm text-yellow-200 mb-2">
-            ⚠️ <strong>Important:</strong> This password reset link is valid for 1 hour.
+        <p class="text-sm text-yellow-200 mb-2 flex items-start">
+            <i data-lucide="alert-triangle" class="w-4 h-4 mr-2 mt-0.5 flex-shrink-0"></i>
+            <span><strong>Important:</strong> This password reset link is valid for 1 hour.</span>
         </p>
-        <p class="text-xs text-yellow-300">
+        <p class="text-xs text-yellow-300 ml-6">
             Send this link to the user via email or another secure channel. They will use it to set their password.
         </p>
     </div>
@@ -39,11 +40,13 @@
                    readonly>
             <button type="button"
                     onclick="copyToClipboard()"
-                    class="btn-primary flex-shrink-0">
-                📋 Copy
+                    class="btn-primary flex-shrink-0 flex items-center">
+                <i data-lucide="copy" class="w-4 h-4 mr-2"></i> Copy
             </button>
         </div>
-        <p id="copyStatus" class="text-sm text-green-400 mt-2 hidden">✅ Link copied to clipboard!</p>
+        <p id="copyStatus" class="text-sm text-green-400 mt-2 hidden flex items-center">
+            <i data-lucide="check-circle" class="w-4 h-4 mr-1"></i> Link copied to clipboard!
+        </p>
     </div>
 
     <div class="mt-6">

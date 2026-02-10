@@ -3,8 +3,8 @@
 <?= $this->section('content') ?>
 
 <div class="mb-6">
-    <a href="<?= base_url('superadmin/projects') ?>" class="text-indigo-400 hover:text-indigo-300 text-sm">
-        ← Back to Projects
+    <a href="<?= base_url('superadmin/projects') ?>" class="text-[#D4AF37] hover:text-[#C29F2F] text-sm flex items-center w-fit">
+        <i data-lucide="arrow-left" class="w-4 h-4 mr-1"></i> Back to Projects
     </a>
 </div>
 
@@ -70,11 +70,11 @@
             <!-- Languages (Fixed) -->
             <div class="mb-6">
                 <label class="form-label">Supported Languages</label>
-                <div class="p-4 bg-[#0f1419] rounded-lg border border-[#2d3561]">
+                <div class="p-4 bg-[#1A1C1E] rounded-lg border border-[#3a3d42]">
                     <div class="flex space-x-4">
-                        <span class="badge badge-info">🇬🇧 English (EN)</span>
-                        <span class="badge badge-info">🇩🇪 German (DE)</span>
-                        <span class="badge badge-info">🇪🇸 Spanish (ES)</span>
+                        <span class="badge badge-info">English (EN)</span>
+                        <span class="badge badge-info">German (DE)</span>
+                        <span class="badge badge-info">Spanish (ES)</span>
                     </div>
                     <p class="text-xs text-gray-500 mt-2">
                         Fixed language set. English is the source language, with translations to German and Spanish.
@@ -84,8 +84,8 @@
 
             <!-- Submit Buttons -->
             <div class="flex space-x-3">
-                <button type="submit" class="btn-primary">
-                    💾 Create Project
+                <button type="submit" class="btn-primary flex items-center">
+                    <i data-lucide="save" class="w-4 h-4 mr-2"></i> Create Project
                 </button>
                 <a href="<?= base_url('superadmin/projects') ?>" class="btn-secondary">
                     Cancel
@@ -95,9 +95,9 @@
     </div>
 
     <!-- Info Box -->
-    <div class="card p-4 mt-4 border-indigo-500">
+    <div class="card p-4 mt-4 border-[#D4AF37]">
         <div class="flex items-start">
-            <span class="text-2xl mr-3">💡</span>
+            <i data-lucide="lightbulb" class="w-6 h-6 mr-3 text-[#D4AF37] flex-shrink-0"></i>
             <div>
                 <p class="text-sm text-gray-300 mb-2">
                     <strong>After creating a project:</strong>
