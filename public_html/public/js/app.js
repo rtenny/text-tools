@@ -563,11 +563,10 @@ document.addEventListener('DOMContentLoaded', function () {
             // Get form values
             var propertyType = document.getElementById('alttext_property_type').value;
             var location = document.getElementById('alttext_location').value;
-            var city = document.getElementById('alttext_city').value;
             var imageSource = document.querySelector('input[name="image_source"]:checked').value;
 
             // Validate required fields
-            if (!propertyType || !location || !city) {
+            if (!propertyType || !location) {
                 showError('error-message-alttext', 'Please fill in all required fields.');
                 return;
             }
@@ -590,7 +589,6 @@ document.addEventListener('DOMContentLoaded', function () {
             var formData = new FormData();
             formData.append('property_type', propertyType);
             formData.append('location', location);
-            formData.append('city', city);
             formData.append('image_source', imageSource);
             formData.append(window.CSRF_TOKEN_NAME, window.CSRF_TOKEN_HASH);
 
@@ -651,7 +649,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     radio.checked = false;
                 });
 
-                // Clear translation boxes
+                // Clear selected card styling
+                document.querySelectorAll('.alttext-option-card').forEach(function (c) {
+                    c.style.borderColor = '';
+                    c.style.backgroundColor = '';
+                });
+
+                // Clear English field and translation boxes
                 document.querySelectorAll('#alttext .translation-box .output').forEach(function (textarea) {
                     textarea.value = '';
                 });
@@ -689,6 +693,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Get the selected alt text
                 var selectedText = document.getElementById('alttext_content_' + optionNum).textContent;
+
+                // Populate English field
+                var englishTextarea = document.getElementById('output-en-alttext');
+                if (englishTextarea) {
+                    englishTextarea.value = selectedText;
+                    // Show copy button for English field
+                    var englishCopyBtn = document.querySelector('[data-target="output-en-alttext"]');
+                    if (englishCopyBtn) {
+                        englishCopyBtn.style.display = 'inline-block';
+                    }
+                }
 
                 // Clear and translate to all languages
                 var boxes = document.querySelectorAll('#alttext .translation-box[data-lang]');

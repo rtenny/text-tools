@@ -138,13 +138,12 @@ Provide ONLY the rewritten {$lang} text, without any explanations or additional 
      * @param string $mimeType Image MIME type (image/jpeg, image/png, image/webp)
      * @param string $propertyType Property type (Villa, Apartment, etc.)
      * @param string $location Location/town name
-     * @param string $city City name
      * @return array Array of 3 alt text options
      * @throws \Exception If generation fails
      */
-    public function generateImageAltText(string $imageBase64, string $mimeType, string $propertyType, string $location, string $city): array
+    public function generateImageAltText(string $imageBase64, string $mimeType, string $propertyType, string $location): array
     {
-        $prompt = $this->buildAltTextPrompt($propertyType, $location, $city);
+        $prompt = $this->buildAltTextPrompt($propertyType, $location);
         $response = $this->callClaudeVisionAPI($imageBase64, $mimeType, $prompt, 1024);
 
         return $this->parseAltTextOptions($response);
@@ -252,10 +251,9 @@ Write ONLY the title and property description without any additional explanation
      *
      * @param string $propertyType Property type
      * @param string $location Location/town name
-     * @param string $city City name
      * @return string Generated prompt
      */
-    private function buildAltTextPrompt(string $propertyType, string $location, string $city): string
+    private function buildAltTextPrompt(string $propertyType, string $location): string
     {
         return "You are an SEO and accessibility expert specialising in real estate property images.
 
@@ -263,7 +261,7 @@ Analyse this property image and generate exactly 3 different alt text descriptio
 
 Property Context:
 - Property Type: {$propertyType}
-- Location: {$city}, {$location}, Spain
+- Location: {$location}, Spain
 
 Requirements for each alt text:
 - Maximum 150 characters

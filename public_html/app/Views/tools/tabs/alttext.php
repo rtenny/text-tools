@@ -39,12 +39,6 @@
                 <?php endif; ?>
             </div>
 
-            <!-- City -->
-            <div>
-                <label for="alttext_city" class="form-label">City *</label>
-                <input type="text" name="city" id="alttext_city" class="form-input" placeholder="e.g. Marbella" required>
-            </div>
-
             <!-- Image Source Toggle -->
             <div>
                 <label class="form-label">Image Source *</label>
@@ -92,40 +86,44 @@
     <!-- Alt Text Options -->
     <div class="grid grid-cols-1 gap-4 mb-6">
         <div class="alttext-option-card border border-[#3a3d42] rounded-lg p-4 cursor-pointer hover:border-[#D4AF37] transition-colors" data-option="1" style="display: none;">
-            <div class="flex items-start justify-between mb-2">
-                <div class="flex items-center">
-                    <input type="radio" name="selected_alttext" value="1" id="alttext_option_1" class="mr-3">
-                    <label for="alttext_option_1" class="form-label mb-0 cursor-pointer">Option 1</label>
-                </div>
-                <button type="button" class="copy-btn text-xs text-[#D4AF37] hover:text-[#C29F2F]" data-target="alttext_content_1"><i data-lucide="copy" class="w-3 h-3 mr-1 inline"></i> Copy</button>
+            <div class="flex items-center mb-2">
+                <input type="radio" name="selected_alttext" value="1" id="alttext_option_1" class="mr-3">
+                <label for="alttext_option_1" class="form-label mb-0 cursor-pointer">Option 1</label>
             </div>
             <p class="text-sm text-gray-300" id="alttext_content_1"></p>
             <p class="text-xs text-gray-500 mt-2">Character count: <span id="alttext_count_1">0</span></p>
         </div>
 
         <div class="alttext-option-card border border-[#3a3d42] rounded-lg p-4 cursor-pointer hover:border-[#D4AF37] transition-colors" data-option="2" style="display: none;">
-            <div class="flex items-start justify-between mb-2">
-                <div class="flex items-center">
-                    <input type="radio" name="selected_alttext" value="2" id="alttext_option_2" class="mr-3">
-                    <label for="alttext_option_2" class="form-label mb-0 cursor-pointer">Option 2</label>
-                </div>
-                <button type="button" class="copy-btn text-xs text-[#D4AF37] hover:text-[#C29F2F]" data-target="alttext_content_2"><i data-lucide="copy" class="w-3 h-3 mr-1 inline"></i> Copy</button>
+            <div class="flex items-center mb-2">
+                <input type="radio" name="selected_alttext" value="2" id="alttext_option_2" class="mr-3">
+                <label for="alttext_option_2" class="form-label mb-0 cursor-pointer">Option 2</label>
             </div>
             <p class="text-sm text-gray-300" id="alttext_content_2"></p>
             <p class="text-xs text-gray-500 mt-2">Character count: <span id="alttext_count_2">0</span></p>
         </div>
 
         <div class="alttext-option-card border border-[#3a3d42] rounded-lg p-4 cursor-pointer hover:border-[#D4AF37] transition-colors" data-option="3" style="display: none;">
-            <div class="flex items-start justify-between mb-2">
-                <div class="flex items-center">
-                    <input type="radio" name="selected_alttext" value="3" id="alttext_option_3" class="mr-3">
-                    <label for="alttext_option_3" class="form-label mb-0 cursor-pointer">Option 3</label>
-                </div>
-                <button type="button" class="copy-btn text-xs text-[#D4AF37] hover:text-[#C29F2F]" data-target="alttext_content_3"><i data-lucide="copy" class="w-3 h-3 mr-1 inline"></i> Copy</button>
+            <div class="flex items-center mb-2">
+                <input type="radio" name="selected_alttext" value="3" id="alttext_option_3" class="mr-3">
+                <label for="alttext_option_3" class="form-label mb-0 cursor-pointer">Option 3</label>
             </div>
             <p class="text-sm text-gray-300" id="alttext_content_3"></p>
             <p class="text-xs text-gray-500 mt-2">Character count: <span id="alttext_count_3">0</span></p>
         </div>
+    </div>
+
+    <hr class="border-[#3a3d42] my-6">
+
+    <h3 class="text-lg font-semibold text-white mb-4">English</h3>
+
+    <!-- English Alt Text -->
+    <div class="translation-box mb-6" id="box-en-alttext">
+        <div class="flex justify-between items-center mb-2">
+            <label class="form-label mb-0">Alt Text</label>
+            <button type="button" class="copy-btn text-xs text-[#D4AF37] hover:text-[#C29F2F]" data-target="output-en-alttext" style="display: none;"><i data-lucide="copy" class="w-3 h-3 mr-1 inline"></i> Copy</button>
+        </div>
+        <textarea class="form-textarea output" id="output-en-alttext" rows="3" placeholder="Select an option above to populate..."></textarea>
     </div>
 
     <h3 class="text-lg font-semibold text-white mb-4">Translations</h3>

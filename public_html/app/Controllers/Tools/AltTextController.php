@@ -38,12 +38,11 @@ class AltTextController extends BaseController
         // Get form data
         $propertyType = $this->request->getPost('property_type');
         $location = $this->request->getPost('location');
-        $city = $this->request->getPost('city');
         $imageSource = $this->request->getPost('image_source'); // 'upload' or 'url'
 
         // Validate required fields
-        if (empty($propertyType) || empty($location) || empty($city)) {
-            return $this->response->setJSON(['success' => false, 'error' => 'Property type, location, and city are required.']);
+        if (empty($propertyType) || empty($location)) {
+            return $this->response->setJSON(['success' => false, 'error' => 'Property type and location are required.']);
         }
 
         try {
@@ -72,8 +71,7 @@ class AltTextController extends BaseController
                 $imageData['base64'],
                 $imageData['mime_type'],
                 $propertyType,
-                $location,
-                $city
+                $location
             );
 
             return $this->response->setJSON([
