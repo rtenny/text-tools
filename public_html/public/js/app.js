@@ -362,7 +362,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 bathrooms: document.getElementById('bathrooms').value,
                 living_area: document.getElementById('living_area').value,
                 plot_size: document.getElementById('plot_size').value || '0',
-                features: document.getElementById('features').value
+                feature_list: (function() {
+                    var checked = [];
+                    document.querySelectorAll('.feature-checkbox:checked').forEach(function(cb) {
+                        checked.push(cb.value);
+                    });
+                    return checked.join(', ');
+                })(),
+                additional_description: document.getElementById('features').value.trim()
             };
 
             // Step 1: Generate English description

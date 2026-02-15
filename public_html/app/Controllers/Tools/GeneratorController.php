@@ -23,7 +23,8 @@ class GeneratorController extends BaseController
             'bathrooms'     => $this->request->getPost('bathrooms'),
             'living_area'   => $this->request->getPost('living_area'),
             'plot_size'     => $this->request->getPost('plot_size'),
-            'features'      => $this->request->getPost('features'),
+            'feature_list'           => $this->request->getPost('feature_list'),
+            'additional_description' => $this->request->getPost('additional_description'),
         ];
 
         // Validate required fields

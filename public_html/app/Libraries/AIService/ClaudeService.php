@@ -161,28 +161,29 @@ Provide ONLY the rewritten {$lang} text, without any explanations or additional 
         return "You are a professional real estate agent. Generate an engaging, professional property description in English based on the following details:
 
 Property Details:
-- Property Type: {$propertyData['type']}
-- Location: {$propertyData['town']}
-- Region: {$propertyData['region']}
+- Property Type: {$propertyData['property_type']}
+- Location: {$propertyData['location']}
 - Bedrooms: {$propertyData['bedrooms']}
 - Bathrooms: {$propertyData['bathrooms']}
 - Living Area: {$propertyData['living_area']} m²
 - Plot Size: {$propertyData['plot_size']} m²
-- Additional Features: {$propertyData['features']}
+- Features: {$propertyData['feature_list']}
+- Additional Description: {$propertyData['additional_description']}
 
 Requirements for the description:
 1. Write 3-4 compelling paragraphs
 2. Structure the description as follows:
    - Opening paragraph: Overview of the property and its unique features
    - Interior and amenities: Details about rooms, equipment, and special characteristics
-   - Location and surroundings: Information about {$propertyData['town']} and the {$propertyData['region']} region (infrastructure, beaches, attractions, lifestyle)
+   - Location and surroundings: Information about {$propertyData['location']} and the surrounding area (infrastructure, beaches, attractions, lifestyle)
    - Closing paragraph: Summary and call to action
 
 3. Use professional yet inviting language
-4. Emphasize the advantages of the {$propertyData['town']} location in the {$propertyData['region']} region
-5. Integrate the additional features naturally into the text
-6. Use concrete numbers (square meters, room counts)
-7. Create a vivid image of the property and lifestyle
+4. Emphasize the advantages of the {$propertyData['location']} location
+5. Integrate the listed features naturally into the text
+6. If an additional description is provided, incorporate those details naturally
+7. Use concrete numbers (square meters, room counts)
+8. Create a vivid image of the property and lifestyle
 
 Write ONLY the property description without any additional explanations or comments.";
     }
