@@ -20,41 +20,124 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // ============================================================
-    // Copy to Clipboard
+    // Copy to Clipboard (Event Delegation)
     // ============================================================
-    document.querySelectorAll('.copy-btn').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            var targetId = btn.getAttribute('data-target');
-            var targetElement = document.getElementById(targetId);
-            if (!targetElement) return;
+    document.addEventListener('click', function (e) {
+        // Find the copy button (could be the button itself or a parent of the clicked element)
+        var copyBtn = e.target.closest('.copy-btn');
+        if (!copyBtn) return;
 
-            // Get text content - works for both textarea and text elements
-            var textToCopy = targetElement.value || targetElement.textContent || targetElement.innerText;
-            if (!textToCopy) return;
+        e.preventDefault();
+        e.stopPropagation();
 
-            navigator.clipboard.writeText(textToCopy).then(function () {
-                var original = btn.innerHTML;
-                btn.innerHTML = '✅ Copied!';
-                setTimeout(function () { btn.innerHTML = original; }, 2000);
-            }).catch(function () {
-                // Fallback
-                if (targetElement.select) {
-                    targetElement.select();
-                    document.execCommand('copy');
-                } else {
-                    // For non-input elements, create temporary textarea
-                    var tempTextarea = document.createElement('textarea');
-                    tempTextarea.value = textToCopy;
-                    tempTextarea.style.position = 'fixed';
-                    tempTextarea.style.opacity = '0';
-                    document.body.appendChild(tempTextarea);
-                    tempTextarea.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(tempTextarea);
+        var targetId = copyBtn.getAttribute('data-target');
+        if (!targetId) {
+            console.error('Copy button missing data-target attribute');
+            return;
+        }
+
+        var targetElement = document.getElementById(targetId);
+        if (!targetElement) {
+            console.error('Target element not found:', targetId);
+            return;
+        }
+
+        // Get text content - works for both textarea and text elements
+        var textToCopy = targetElement.value || targetElement.textContent || targetElement.innerText;
+        textToCopy = (textToCopy || '').trim();
+
+        if (!textToCopy) {
+            console.warn('No text to copy from element:', targetId);
+            return;
+        }
+
+        // Store original button content
+        var iconElement = copyBtn.querySelector('[data-lucide]');
+        var originalText = copyBtn.childNodes[copyBtn.childNodes.length - 1].textContent;
+
+        // Function to show success feedback
+        function showSuccess() {
+            // Keep the icon, just change the text
+            if (copyBtn.childNodes.length > 0) {
+                var lastNode = copyBtn.childNodes[copyBtn.childNodes.length - 1];
+                if (lastNode.nodeType === Node.TEXT_NODE) {
+                    lastNode.textContent = ' Copied!';
                 }
+            }
+
+            // Restore original text after 2 seconds
+            setTimeout(function () {
+                if (copyBtn.childNodes.length > 0) {
+                    var lastNode = copyBtn.childNodes[copyBtn.childNodes.length - 1];
+                    if (lastNode.nodeType === Node.TEXT_NODE) {
+                        lastNode.textContent = originalText;
+                    }
+                }
+            }, 2000);
+        }
+
+        // Try modern clipboard API first
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(textToCopy)
+                .then(function () {
+                    showSuccess();
+                })
+                .catch(function (err) {
+                    console.warn('Clipboard API failed, using fallback:', err);
+                    copyUsingFallback();
+                });
+        } else {
+            copyUsingFallback();
+        }
+
+        // Fallback copy method
+        function copyUsingFallback() {
+            var success = false;
+
+            if (targetElement.select) {
+                // For input/textarea elements
+                targetElement.select();
+                targetElement.setSelectionRange(0, 99999); // For mobile
+                success = document.execCommand('copy');
                 window.getSelection().removeAllRanges();
-            });
-        });
+            } else {
+                // For non-input elements, create temporary textarea
+                var tempTextarea = document.createElement('textarea');
+                tempTextarea.value = textToCopy;
+                tempTextarea.style.position = 'fixed';
+                tempTextarea.style.left = '-9999px';
+                tempTextarea.style.top = '0';
+                document.body.appendChild(tempTextarea);
+                tempTextarea.focus();
+                tempTextarea.select();
+                tempTextarea.setSelectionRange(0, 99999);
+
+                try {
+                    success = document.execCommand('copy');
+                } catch (err) {
+                    console.error('Copy failed:', err);
+                    success = false;
+                }
+
+                document.body.removeChild(tempTextarea);
+                window.getSelection().removeAllRanges();
+            }
+
+            if (success) {
+                showSuccess();
+            } else {
+                console.error('Copy operation failed');
+                if (copyBtn.childNodes.length > 0) {
+                    var lastNode = copyBtn.childNodes[copyBtn.childNodes.length - 1];
+                    if (lastNode.nodeType === Node.TEXT_NODE) {
+                        lastNode.textContent = ' Failed!';
+                        setTimeout(function () {
+                            lastNode.textContent = originalText;
+                        }, 2000);
+                    }
+                }
+            }
+        }
     });
 
     // ============================================================
