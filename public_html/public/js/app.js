@@ -252,6 +252,29 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    function translateTitle(sourceTitle, lang) {
+        var boxId = 'box-title-' + lang + '-generator';
+        var outputId = 'output-title-' + lang + '-generator';
+
+        showSpinner(boxId);
+
+        return ajaxPost(window.BASE_URL + 'tools/translate', {
+            source_text: sourceTitle,
+            target_language: lang
+        }).then(function (data) {
+            if (data.success) {
+                document.getElementById(outputId).value = data.translation;
+                showCopyBtn(outputId);
+            } else {
+                document.getElementById(outputId).value = 'Error: ' + data.error;
+            }
+        }).catch(function (err) {
+            document.getElementById(outputId).value = 'Error: ' + err.message;
+        }).finally(function () {
+            hideSpinner(boxId);
+        });
+    }
+
     // ============================================================
     // Tab 1: Translator Form
     // ============================================================
@@ -383,19 +406,46 @@ document.addEventListener('DOMContentLoaded', function () {
                     return;
                 }
 
-                document.getElementById('output-en-generator').value = data.description;
+                // Parse title from markdown heading (# Title) or bold (**Title**)
+                var fullText = data.description;
+                var title = '';
+                var description = fullText;
+                var titleMatch = fullText.match(/^#+\s+(.+)/m);
+                if (!titleMatch) {
+                    titleMatch = fullText.match(/^\*\*(.+?)\*\*\s*$/m);
+                }
+                if (titleMatch) {
+                    title = titleMatch[1].trim();
+                    description = fullText.replace(titleMatch[0], '').trim();
+                }
+
+                // Populate English fields
+                document.getElementById('output-title-en-generator').value = title;
+                if (title) showCopyBtn('output-title-en-generator');
+                document.getElementById('output-en-generator').value = description;
                 showCopyBtn('output-en-generator');
 
                 // Step 2: Translate to all languages
-                var boxes = document.querySelectorAll('#generator .translation-box[data-lang]');
+                var descBoxes = document.querySelectorAll('#generator .translation-box[data-lang]:not([id^="box-title-"])');
                 var promises = [];
 
-                boxes.forEach(function (box) {
+                descBoxes.forEach(function (box) {
                     var lang = box.getAttribute('data-lang');
                     if (lang) {
-                        promises.push(translateLanguage(data.description, lang, 'generator'));
+                        promises.push(translateLanguage(description, lang, 'generator'));
                     }
                 });
+
+                // Translate titles separately
+                if (title) {
+                    var titleBoxes = document.querySelectorAll('#generator .translation-box[id^="box-title-"][data-lang]');
+                    titleBoxes.forEach(function (box) {
+                        var lang = box.getAttribute('data-lang');
+                        if (lang) {
+                            promises.push(translateTitle(title, lang));
+                        }
+                    });
+                }
 
                 return Promise.all(promises);
             }).catch(function (err) {

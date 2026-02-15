@@ -171,21 +171,22 @@ Property Details:
 - Additional Description: {$propertyData['additional_description']}
 
 Requirements for the description:
-1. Write 3-4 compelling paragraphs
-2. Structure the description as follows:
+1. Start with a short, compelling title on the first line using a markdown heading (# Title)
+2. Write 3-4 compelling paragraphs after the title
+3. Structure the description as follows:
    - Opening paragraph: Overview of the property and its unique features
    - Interior and amenities: Details about rooms, equipment, and special characteristics
    - Location and surroundings: Information about {$propertyData['location']} and the surrounding area (infrastructure, beaches, attractions, lifestyle)
    - Closing paragraph: Summary and call to action
 
-3. Use professional yet inviting language
-4. Emphasize the advantages of the {$propertyData['location']} location
-5. Integrate the listed features naturally into the text
-6. If an additional description is provided, incorporate those details naturally
-7. Use concrete numbers (square meters, room counts)
-8. Create a vivid image of the property and lifestyle
+4. Use professional yet inviting language
+5. Emphasize the advantages of the {$propertyData['location']} location
+6. Integrate the listed features naturally into the text
+7. If an additional description is provided, incorporate those details naturally
+8. Use concrete numbers (square meters, room counts)
+9. Create a vivid image of the property and lifestyle
 
-Write ONLY the property description without any additional explanations or comments.";
+Write ONLY the title and property description without any additional explanations or comments.";
     }
 
     /**

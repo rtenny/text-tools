@@ -132,12 +132,21 @@
 
     <hr class="border-[#3a3d42] my-6">
 
-    <h3 class="text-lg font-semibold text-white mb-4">Generated Description</h3>
+    <h3 class="text-lg font-semibold text-white mb-4">English</h3>
 
-    <!-- English Output -->
+    <!-- English Title -->
+    <div class="translation-box mb-4" id="box-title-en-generator">
+        <div class="flex justify-between items-center mb-2">
+            <label class="form-label mb-0">Title</label>
+            <button type="button" class="copy-btn text-xs text-[#D4AF37] hover:text-[#C29F2F]" data-target="output-title-en-generator" style="display: none;"><i data-lucide="copy" class="w-3 h-3 mr-1 inline"></i> Copy</button>
+        </div>
+        <input type="text" class="form-input output" id="output-title-en-generator" readonly placeholder="Generated title will appear here...">
+    </div>
+
+    <!-- English Description -->
     <div class="translation-box mb-6" id="box-en-generator">
         <div class="flex justify-between items-center mb-2">
-            <label class="form-label mb-0">English Description</label>
+            <label class="form-label mb-0">Description</label>
             <button type="button" class="copy-btn text-xs text-[#D4AF37] hover:text-[#C29F2F]" data-target="output-en-generator" style="display: none;"><i data-lucide="copy" class="w-3 h-3 mr-1 inline"></i> Copy</button>
         </div>
         <div class="spinner-overlay">
@@ -154,16 +163,34 @@
             if ($lang === 'en') continue;
             $langName = $langLabels[$lang] ?? strtoupper($lang);
         ?>
-        <div class="translation-box" id="box-<?= $lang ?>-generator" data-lang="<?= $lang ?>">
-            <div class="flex justify-between items-center mb-2">
-                <label class="form-label mb-0"><?= $langName ?></label>
-                <button type="button" class="copy-btn text-xs text-[#D4AF37] hover:text-[#C29F2F]" data-target="output-<?= $lang ?>-generator" style="display: none;"><i data-lucide="copy" class="w-3 h-3 mr-1 inline"></i> Copy</button>
+        <div>
+            <h4 class="text-md font-medium text-white mb-3"><?= $langName ?></h4>
+
+            <!-- Title -->
+            <div class="translation-box mb-3" id="box-title-<?= $lang ?>-generator" data-lang="<?= $lang ?>">
+                <div class="flex justify-between items-center mb-2">
+                    <label class="form-label mb-0">Title</label>
+                    <button type="button" class="copy-btn text-xs text-[#D4AF37] hover:text-[#C29F2F]" data-target="output-title-<?= $lang ?>-generator" style="display: none;"><i data-lucide="copy" class="w-3 h-3 mr-1 inline"></i> Copy</button>
+                </div>
+                <div class="spinner-overlay">
+                    <div class="spinner"></div>
+                    <div class="spinner-text">Translating...</div>
+                </div>
+                <input type="text" class="form-input output" id="output-title-<?= $lang ?>-generator" readonly placeholder="Translation will appear here...">
             </div>
-            <div class="spinner-overlay">
-                <div class="spinner"></div>
-                <div class="spinner-text">Translating...</div>
+
+            <!-- Description -->
+            <div class="translation-box" id="box-<?= $lang ?>-generator" data-lang="<?= $lang ?>">
+                <div class="flex justify-between items-center mb-2">
+                    <label class="form-label mb-0">Description</label>
+                    <button type="button" class="copy-btn text-xs text-[#D4AF37] hover:text-[#C29F2F]" data-target="output-<?= $lang ?>-generator" style="display: none;"><i data-lucide="copy" class="w-3 h-3 mr-1 inline"></i> Copy</button>
+                </div>
+                <div class="spinner-overlay">
+                    <div class="spinner"></div>
+                    <div class="spinner-text">Translating...</div>
+                </div>
+                <textarea class="form-textarea output" id="output-<?= $lang ?>-generator" rows="6" readonly placeholder="Translation will appear here..."></textarea>
             </div>
-            <textarea class="form-textarea output" id="output-<?= $lang ?>-generator" rows="6" readonly placeholder="Translation will appear here..."></textarea>
         </div>
         <?php endforeach; ?>
     </div>
