@@ -59,8 +59,15 @@ class ProjectsController extends BaseController
         }
 
         // Encrypt the API key
-        $apiKey = $this->request->getPost('api_key');
-        $encryptedApiKey = $this->encryptionService->encrypt($apiKey);
+        try {
+            $apiKey = $this->request->getPost('api_key');
+            $encryptedApiKey = $this->encryptionService->encrypt($apiKey);
+        } catch (\InvalidArgumentException $e) {
+            return redirect()->back()->withInput()->with('error', 'API Key Error: The API key cannot be empty.');
+        } catch (\Exception $e) {
+            log_message('error', 'API key encryption failed during project creation: ' . $e->getMessage());
+            return redirect()->back()->withInput()->with('error', 'API Key Error: Failed to encrypt the API key. Please check the encryption configuration.');
+        }
 
         $data = [
             'name' => $name,
@@ -74,7 +81,22 @@ class ProjectsController extends BaseController
         if ($this->projectModel->insert($data)) {
             return redirect()->to('superadmin/projects')->with('success', 'Project created successfully.');
         } else {
-            return redirect()->back()->withInput()->with('error', 'Failed to create project. Please try again.');
+            // Get specific error messages from the model
+            $errors = $this->projectModel->errors();
+
+            if (!empty($errors)) {
+                // Format errors with field names for clarity
+                $errorMessages = [];
+                foreach ($errors as $field => $message) {
+                    $fieldName = ucfirst(str_replace('_', ' ', $field));
+                    $errorMessages[] = "{$fieldName}: {$message}";
+                }
+                $errorMessage = 'Failed to create project. ' . implode(' | ', $errorMessages);
+            } else {
+                $errorMessage = 'Database Error: Failed to create project. Please check all fields and try again.';
+            }
+
+            return redirect()->back()->withInput()->with('error', $errorMessage);
         }
     }
 
@@ -143,14 +165,40 @@ class ProjectsController extends BaseController
 
         // Update API key if provided
         if ($apiKeyProvided) {
-            $apiKey = $this->request->getPost('api_key');
-            $data['api_key'] = $this->encryptionService->encrypt($apiKey);
+            try {
+                $apiKey = $this->request->getPost('api_key');
+                $data['api_key'] = $this->encryptionService->encrypt($apiKey);
+            } catch (\InvalidArgumentException $e) {
+                return redirect()->back()->withInput()->with('error', 'API Key Error: The API key cannot be empty.');
+            } catch (\Exception $e) {
+                log_message('error', 'API key encryption failed for project ' . $id . ': ' . $e->getMessage());
+                return redirect()->back()->withInput()->with('error', 'API Key Error: Failed to encrypt the API key. Please check the encryption configuration.');
+            }
         }
+
+        // Temporarily skip model validation since we've already validated in the controller
+        // This prevents the model's 'api_key required' rule from failing when API key isn't being updated
+        $this->projectModel->skipValidation(true);
 
         if ($this->projectModel->update($id, $data)) {
             return redirect()->to('superadmin/projects')->with('success', 'Project updated successfully.');
         } else {
-            return redirect()->back()->withInput()->with('error', 'Failed to update project. Please try again.');
+            // Get specific error messages from the model
+            $errors = $this->projectModel->errors();
+
+            if (!empty($errors)) {
+                // Format errors with field names for clarity
+                $errorMessages = [];
+                foreach ($errors as $field => $message) {
+                    $fieldName = ucfirst(str_replace('_', ' ', $field));
+                    $errorMessages[] = "{$fieldName}: {$message}";
+                }
+                $errorMessage = 'Failed to update project. ' . implode(' | ', $errorMessages);
+            } else {
+                $errorMessage = 'Database Error: Failed to update project. Please check all fields and try again.';
+            }
+
+            return redirect()->back()->withInput()->with('error', $errorMessage);
         }
     }
 
