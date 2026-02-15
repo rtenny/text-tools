@@ -76,17 +76,25 @@ document.addEventListener('DOMContentLoaded', function () {
             }, 2000);
         }
 
-        // Try modern clipboard API first
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(textToCopy)
-                .then(function () {
-                    showSuccess();
-                })
-                .catch(function (err) {
-                    console.warn('Clipboard API failed, using fallback:', err);
-                    copyUsingFallback();
-                });
+        // Try modern clipboard API first (requires HTTPS or localhost)
+        if (typeof navigator !== 'undefined' &&
+            navigator.clipboard &&
+            typeof navigator.clipboard.writeText === 'function') {
+            try {
+                navigator.clipboard.writeText(textToCopy)
+                    .then(function () {
+                        showSuccess();
+                    })
+                    .catch(function (err) {
+                        console.warn('Clipboard API failed, using fallback:', err);
+                        copyUsingFallback();
+                    });
+            } catch (err) {
+                console.warn('Clipboard API not available, using fallback:', err);
+                copyUsingFallback();
+            }
         } else {
+            // Fallback for HTTP or older browsers
             copyUsingFallback();
         }
 
