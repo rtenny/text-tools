@@ -168,3 +168,9 @@
         font-size: 0.8125rem;
     }
 }
+
+/* Alt text option card - selected state */
+.alttext-option-selected {
+    border-color: #D4AF37 \!important;
+    background-color: rgba(212, 175, 55, 0.1) \!important;
+}

@@ -126,6 +126,10 @@
         <textarea class="form-textarea output" id="output-en-alttext" rows="3" placeholder="Select an option above to populate..."></textarea>
     </div>
 
+    <div id="alttext-translate-btn-wrapper" style="display: none;" class="mb-6">
+        <button type="button" class="btn-primary" id="alttext-translate-btn"><i data-lucide="languages" class="w-4 h-4 mr-2 inline"></i> Translate</button>
+    </div>
+
     <h3 class="text-lg font-semibold text-white mb-4">Translations</h3>
 
     <div class="translations-grid grid grid-cols-1 md:grid-cols-2 gap-6">

@@ -57,6 +57,11 @@ $currentUser = [
         </div>
     </main>
 
+    <script src="<?= base_url('js/utils.js') ?>"></script>
+    <script src="<?= base_url('js/translator.js') ?>"></script>
+    <script src="<?= base_url('js/rewriter.js') ?>"></script>
+    <script src="<?= base_url('js/generator.js') ?>"></script>
+    <script src="<?= base_url('js/alttext.js') ?>"></script>
     <script src="<?= base_url('js/app.js') ?>"></script>
     <?= $this->renderSection('scripts') ?>
     <script>

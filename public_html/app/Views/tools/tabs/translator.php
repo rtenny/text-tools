@@ -10,7 +10,7 @@
             <textarea name="source_text" id="source_text_translator" class="form-textarea" rows="8" placeholder="Enter your English property description here..." required></textarea>
         </div>
 
-        <button type="submit" class="btn-primary flex items-center justify-center" id="translate-btn"><i data-lucide="globe" class="w-4 h-4 mr-2"></i> Translate to All Languages</button>
+        <button type="submit" class="btn-primary flex items-center justify-center" id="translate-btn-translator"><i data-lucide="globe" class="w-4 h-4 mr-2"></i> Translate to All Languages</button>
     </form>
 
     <hr class="border-[#3a3d42] my-6">
