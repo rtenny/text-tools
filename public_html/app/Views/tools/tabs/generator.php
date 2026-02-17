@@ -1,6 +1,6 @@
 <div class="card p-6">
     <h2 class="text-xl font-semibold text-white mb-4">Property Description Generator</h2>
-    <p class="text-sm text-gray-400 mb-6">Fill in the property details to generate a professional English description, then translate to all languages.</p>
+    <p class="text-sm text-gray-400 mb-6">Fill in the property details to generate a professional English description. Review and edit it, then click Translate.</p>
 
     <div id="error-message-generator" class="alert alert-error mb-4" style="display: none;"></div>
 
@@ -140,7 +140,7 @@
             <label class="form-label mb-0">Title</label>
             <button type="button" class="copy-btn text-xs text-[#D4AF37] hover:text-[#C29F2F]" data-target="output-title-en-generator" style="display: none;"><i data-lucide="copy" class="w-3 h-3 mr-1 inline"></i> Copy</button>
         </div>
-        <input type="text" class="form-input output" id="output-title-en-generator" readonly placeholder="Generated title will appear here...">
+        <input type="text" class="form-input output" id="output-title-en-generator" placeholder="Generated title will appear here...">
     </div>
 
     <!-- English Description -->
@@ -153,7 +153,11 @@
             <div class="spinner"></div>
             <div class="spinner-text">Generating description...</div>
         </div>
-        <textarea class="form-textarea output" id="output-en-generator" rows="8" readonly placeholder="Generated English description will appear here..."></textarea>
+        <textarea class="form-textarea output" id="output-en-generator" rows="8" placeholder="Generated English description will appear here..."></textarea>
+    </div>
+
+    <div id="translate-btn-wrapper" style="display: none;" class="mb-6">
+        <button type="button" class="btn-primary" id="translate-btn"><i data-lucide="languages" class="w-4 h-4 mr-2 inline"></i> Translate</button>
     </div>
 
     <h3 class="text-lg font-semibold text-white mb-4">Translations</h3>

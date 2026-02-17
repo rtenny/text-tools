@@ -425,35 +425,54 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.getElementById('output-en-generator').value = description;
                 showCopyBtn('output-en-generator');
 
-                // Step 2: Translate to all languages
-                var descBoxes = document.querySelectorAll('#generator .translation-box[data-lang]:not([id^="box-title-"])');
-                var promises = [];
-
-                descBoxes.forEach(function (box) {
-                    var lang = box.getAttribute('data-lang');
-                    if (lang) {
-                        promises.push(translateLanguage(description, lang, 'generator'));
-                    }
-                });
-
-                // Translate titles separately
-                if (title) {
-                    var titleBoxes = document.querySelectorAll('#generator .translation-box[id^="box-title-"][data-lang]');
-                    titleBoxes.forEach(function (box) {
-                        var lang = box.getAttribute('data-lang');
-                        if (lang) {
-                            promises.push(translateTitle(title, lang));
-                        }
-                    });
-                }
-
-                return Promise.all(promises);
+                // Show the Translate button so the user can review/edit first
+                document.getElementById('translate-btn-wrapper').style.display = '';
             }).catch(function (err) {
                 hideSpinner('box-en-generator');
                 showError('error-message-generator', err.message);
             }).finally(function () {
                 btn.disabled = false;
-                btn.textContent = 'Generate Description';
+                btn.innerHTML = '<i data-lucide="sparkles" class="w-4 h-4 mr-2 inline"></i> Generate Description';
+                if (window.lucide) lucide.createIcons();
+            });
+        });
+    }
+
+    // Translate button (generator tab)
+    var translateBtn = document.getElementById('translate-btn');
+    if (translateBtn) {
+        translateBtn.addEventListener('click', function () {
+            var title = document.getElementById('output-title-en-generator').value.trim();
+            var description = document.getElementById('output-en-generator').value.trim();
+
+            if (!description) return;
+
+            translateBtn.disabled = true;
+            translateBtn.innerHTML = '<i data-lucide="languages" class="w-4 h-4 mr-2 inline"></i> Translating...';
+            if (window.lucide) lucide.createIcons();
+
+            var promises = [];
+
+            var descBoxes = document.querySelectorAll('#generator .translation-box[data-lang]:not([id^="box-title-"])');
+            descBoxes.forEach(function (box) {
+                var lang = box.getAttribute('data-lang');
+                if (lang) promises.push(translateLanguage(description, lang, 'generator'));
+            });
+
+            if (title) {
+                var titleBoxes = document.querySelectorAll('#generator .translation-box[id^="box-title-"][data-lang]');
+                titleBoxes.forEach(function (box) {
+                    var lang = box.getAttribute('data-lang');
+                    if (lang) promises.push(translateTitle(title, lang));
+                });
+            }
+
+            Promise.all(promises).catch(function (err) {
+                showError('error-message-generator', err.message);
+            }).finally(function () {
+                translateBtn.disabled = false;
+                translateBtn.innerHTML = '<i data-lucide="languages" class="w-4 h-4 mr-2 inline"></i> Translate';
+                if (window.lucide) lucide.createIcons();
             });
         });
     }

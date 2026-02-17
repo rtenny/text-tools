@@ -10,7 +10,7 @@ $currentUser = [
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= esc($title ?? 'Text Tools') ?> - Property Text Tools</title>
+    <title><?= esc($title ?? 'Text Tools') ?> - ListingLingo Text Tools</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="<?= base_url('css/app.css') ?>">
@@ -23,7 +23,7 @@ $currentUser = [
             <div class="flex items-center space-x-3">
                 <i data-lucide="building-2" class="w-6 h-6"></i>
                 <div>
-                    <h1 class="text-lg font-bold text-white">Property Text Tools</h1>
+                    <h1 class="text-lg font-bold text-white">ListingLingo Text Tools</h1>
                     <p class="text-xs text-gray-400"><?= esc($projectName ?? 'User Panel') ?></p>
                 </div>
             </div>
