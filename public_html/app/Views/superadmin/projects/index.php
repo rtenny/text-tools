@@ -21,6 +21,7 @@
                         <th>Project Name</th>
                         <th>Slug</th>
                         <th>AI Provider</th>
+                        <th>Subscription</th>
                         <th>Languages</th>
                         <th>Status</th>
                         <th>Created</th>
@@ -37,6 +38,15 @@
                                     <span class="badge badge-info">Claude</span>
                                 <?php else: ?>
                                     <span class="badge badge-success">OpenAI</span>
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <?php if (($project['subscription_type'] ?? 'subscription') === 'lifetime'): ?>
+                                    <span class="badge badge-success">Lifetime</span>
+                                <?php else: ?>
+                                    <span class="badge badge-info">
+                                        Sub<?= $project['daily_translation_limit'] ? ' (' . $project['daily_translation_limit'] . '/day)' : '' ?>
+                                    </span>
                                 <?php endif; ?>
                             </td>
                             <td>

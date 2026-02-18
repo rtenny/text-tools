@@ -11,4 +11,10 @@ document.addEventListener('DOMContentLoaded', function () {
     initRewriter();
     initGenerator();
     initAltText();
+
+    // Apply limit state from server-rendered data on page load
+    if (window.TRANSLATION_LIMIT && window.TRANSLATION_LIMIT.limit_reached) {
+        disableTranslateButtons();
+        showTranslateLimitMessage();
+    }
 });

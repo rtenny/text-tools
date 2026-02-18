@@ -3,8 +3,9 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
-use App\Models\UserModel;
 use App\Models\ActivityLogModel;
+use App\Models\ProjectModel;
+use App\Models\UserModel;
 
 class DashboardController extends BaseController
 {
@@ -56,11 +57,18 @@ class DashboardController extends BaseController
                 ->find();
         }
 
+        $projectModel      = new ProjectModel();
+        $project           = $projectModel->find($projectId);
+        $dailyLimit        = $project['daily_translation_limit'] ?? null;
+        $todayTranslations = $this->activityLogModel->getTodayTranslationCount($projectId);
+
         $data = [
-            'title' => 'Admin Dashboard',
-            'totalUsers' => $totalUsers,
-            'recentUsers' => $recentUsers,
-            'recentActivity' => $recentActivity,
+            'title'             => 'Admin Dashboard',
+            'totalUsers'        => $totalUsers,
+            'recentUsers'       => $recentUsers,
+            'recentActivity'    => $recentActivity,
+            'todayTranslations' => $todayTranslations,
+            'dailyLimit'        => $dailyLimit,
         ];
 
         return view('admin/dashboard', $data);

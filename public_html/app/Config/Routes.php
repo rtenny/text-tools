@@ -85,6 +85,7 @@ $routes->group('admin', ['filter' => ['auth', 'admin', 'tenant']], function($rou
  */
 $routes->group('tools', ['filter' => ['auth', 'tenant']], function($routes) {
     $routes->get('/', 'Tools\TranslatorController::index');
+    $routes->get('usage', 'Tools\TranslatorController::usage');
     $routes->post('translate', 'Tools\TranslatorController::translate');
     $routes->post('rewrite', 'Tools\RewriterController::rewrite');
     $routes->post('generate', 'Tools\GeneratorController::generate');

@@ -1,5 +1,20 @@
 <div class="card p-6">
-    <h2 class="text-xl font-semibold text-white mb-4">Multilingual Translator</h2>
+    <div class="flex items-start justify-between mb-4">
+        <h2 class="text-xl font-semibold text-white">Multilingual Translator</h2>
+        <?php if (!$isUnlimited): ?>
+        <div class="flex items-center space-x-3 ml-4">
+            <span class="text-sm text-gray-400 whitespace-nowrap">
+                Today: <span id="usage-count" class="<?= $todayUsed >= $dailyLimit ? 'text-red-400' : 'text-white' ?> font-semibold"><?= $todayUsed ?></span>
+                / <span class="text-white font-semibold"><?= $dailyLimit ?></span>
+            </span>
+            <div class="w-24 bg-[#3a3d42] rounded-full h-2">
+                <div id="usage-bar" class="h-2 rounded-full transition-all duration-300"
+                     style="width: <?= min(100, $dailyLimit > 0 ? round(($todayUsed / $dailyLimit) * 100) : 0) ?>%;
+                            background-color: <?= $todayUsed >= $dailyLimit ? '#ef4444' : '#D4AF37' ?>;"></div>
+            </div>
+        </div>
+        <?php endif; ?>
+    </div>
     <p class="text-sm text-gray-400 mb-6">Enter your English property description and translate it to all configured languages.</p>
 
     <div id="error-message-translator" class="alert alert-error mb-4" style="display: none;"></div>

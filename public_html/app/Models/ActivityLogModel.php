@@ -141,6 +141,23 @@ class ActivityLogModel extends Model
     }
 
     /**
+     * Count translate actions for a project today (server timezone date).
+     *
+     * @param int $projectId
+     * @return int
+     */
+    public function getTodayTranslationCount(int $projectId): int
+    {
+        $result = $this->selectCount('id', 'total')
+            ->where('project_id', $projectId)
+            ->where('action', 'translate')
+            ->where('DATE(created_at)', date('Y-m-d'))
+            ->first();
+
+        return (int) ($result['total'] ?? 0);
+    }
+
+    /**
      * Get total tokens used by project
      *
      * @param int $projectId

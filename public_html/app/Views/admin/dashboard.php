@@ -16,6 +16,27 @@
             <div><i data-lucide="users" class="w-10 h-10 text-[#D4AF37]"></i></div>
         </div>
     </div>
+
+    <!-- Translations Today -->
+    <div class="card p-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm text-gray-400 mb-1">Translations Today</p>
+                <?php if ($dailyLimit === null): ?>
+                    <p class="text-3xl font-bold text-white"><?= $todayTranslations ?></p>
+                    <p class="text-xs text-gray-500 mt-1">Unlimited</p>
+                <?php else: ?>
+                    <p class="text-3xl font-bold <?= $todayTranslations >= $dailyLimit ? 'text-red-400' : 'text-white' ?>">
+                        <?= $todayTranslations ?> / <?= $dailyLimit ?>
+                    </p>
+                    <p class="text-xs text-gray-500 mt-1">
+                        <?= $dailyLimit > 0 ? round(($todayTranslations / $dailyLimit) * 100) : 0 ?>% of daily limit
+                    </p>
+                <?php endif; ?>
+            </div>
+            <div><i data-lucide="globe" class="w-10 h-10 text-[#D4AF37]"></i></div>
+        </div>
+    </div>
 </div>
 
 <!-- Recent Users -->

@@ -114,8 +114,12 @@ function translateLanguage(sourceText, lang, suffix) {
         if (data.success) {
             document.getElementById(outputId).value = data.translation;
             showCopyBtn(outputId);
+            updateUsageCounter(1);
         } else {
             document.getElementById(outputId).value = 'Error: ' + data.error;
+            if (data.limit_reached) {
+                setUsageCounterAtLimit(data.used, data.limit);
+            }
         }
     }).catch(function (err) {
         document.getElementById(outputId).value = 'Error: ' + err.message;
@@ -137,8 +141,12 @@ function translateTitle(sourceTitle, lang) {
         if (data.success) {
             document.getElementById(outputId).value = data.translation;
             showCopyBtn(outputId);
+            updateUsageCounter(1);
         } else {
             document.getElementById(outputId).value = 'Error: ' + data.error;
+            if (data.limit_reached) {
+                setUsageCounterAtLimit(data.used, data.limit);
+            }
         }
     }).catch(function (err) {
         document.getElementById(outputId).value = 'Error: ' + err.message;
@@ -287,6 +295,78 @@ function initCopyButtons() {
                     }
                 }
             }
+        }
+    });
+}
+
+// ============================================================
+// Translation usage counter
+// ============================================================
+function updateUsageCounter(increment) {
+    if (!window.TRANSLATION_LIMIT || window.TRANSLATION_LIMIT.is_unlimited) return;
+
+    window.TRANSLATION_LIMIT.used += increment;
+    var used  = window.TRANSLATION_LIMIT.used;
+    var limit = window.TRANSLATION_LIMIT.limit;
+
+    var countEl = document.getElementById('usage-count');
+    if (countEl) {
+        countEl.textContent = used;
+        countEl.className = (used >= limit) ? 'text-red-400 font-semibold' : 'text-white font-semibold';
+    }
+
+    var barEl = document.getElementById('usage-bar');
+    if (barEl) {
+        var pct = Math.min(100, Math.round((used / Math.max(1, limit)) * 100));
+        barEl.style.width = pct + '%';
+        barEl.style.backgroundColor = (used >= limit) ? '#ef4444' : '#D4AF37';
+    }
+
+    if (used >= limit) {
+        window.TRANSLATION_LIMIT.limit_reached = true;
+        disableTranslateButtons();
+        showTranslateLimitMessage();
+    }
+}
+
+function setUsageCounterAtLimit(used, limit) {
+    if (!window.TRANSLATION_LIMIT) return;
+    window.TRANSLATION_LIMIT.used  = used;
+    window.TRANSLATION_LIMIT.limit = limit;
+    window.TRANSLATION_LIMIT.limit_reached = true;
+
+    var countEl = document.getElementById('usage-count');
+    if (countEl) {
+        countEl.textContent = used;
+        countEl.className = 'text-red-400 font-semibold';
+    }
+    var barEl = document.getElementById('usage-bar');
+    if (barEl) {
+        barEl.style.width = '100%';
+        barEl.style.backgroundColor = '#ef4444';
+    }
+    disableTranslateButtons();
+    showTranslateLimitMessage();
+}
+
+function disableTranslateButtons() {
+    var ids = ['translate-btn-translator', 'translate-btn', 'rewrite-btn'];
+    ids.forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) {
+            el.disabled = true;
+            el.title = 'Daily translation limit reached';
+        }
+    });
+}
+
+function showTranslateLimitMessage() {
+    var ids = ['error-message-translator', 'error-message-generator', 'error-message-rewriter'];
+    ids.forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) {
+            el.textContent = 'Daily translation limit reached. Translations will reset tomorrow.';
+            el.style.display = 'block';
         }
     });
 }

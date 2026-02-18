@@ -81,6 +81,34 @@
                 </p>
             </div>
 
+            <!-- Subscription Type -->
+            <div class="mb-4">
+                <label for="subscription_type" class="form-label">Subscription Type *</label>
+                <select id="subscription_type" name="subscription_type" class="form-select" required
+                        onchange="toggleLimitField(this.value)">
+                    <option value="subscription" <?= old('subscription_type', $project['subscription_type'] ?? 'subscription') === 'subscription' ? 'selected' : '' ?>>
+                        Subscription (€50/month)
+                    </option>
+                    <option value="lifetime" <?= old('subscription_type', $project['subscription_type'] ?? 'subscription') === 'lifetime' ? 'selected' : '' ?>>
+                        Lifetime (€1000 one-off)
+                    </option>
+                </select>
+                <p class="text-xs text-gray-500 mt-1">Lifetime projects have no daily translation limit.</p>
+            </div>
+
+            <!-- Daily Translation Limit -->
+            <div class="mb-6" id="limit-field">
+                <label for="daily_translation_limit" class="form-label">Daily Translation Limit</label>
+                <input type="number"
+                       id="daily_translation_limit"
+                       name="daily_translation_limit"
+                       class="form-input"
+                       value="<?= old('daily_translation_limit', $project['daily_translation_limit'] ?? '') ?>"
+                       min="1"
+                       placeholder="e.g., 50">
+                <p class="text-xs text-gray-500 mt-1">Max AI translation calls per day. Leave blank for unlimited.</p>
+            </div>
+
             <!-- Languages (Fixed - Display Only) -->
             <div class="mb-6">
                 <label class="form-label">Supported Languages</label>
@@ -165,6 +193,15 @@
         </div>
     </div>
 </div>
+
+<script>
+function toggleLimitField(type) {
+    document.getElementById('limit-field').style.display = (type === 'lifetime') ? 'none' : '';
+}
+document.addEventListener('DOMContentLoaded', function () {
+    toggleLimitField(document.getElementById('subscription_type').value);
+});
+</script>
 
 <!-- Select2 for Towns Dropdown -->
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />

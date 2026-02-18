@@ -69,13 +69,21 @@ class ProjectsController extends BaseController
             return redirect()->back()->withInput()->with('error', 'API Key Error: Failed to encrypt the API key. Please check the encryption configuration.');
         }
 
+        $subscriptionType = $this->request->getPost('subscription_type') ?? 'subscription';
+        $dailyLimitRaw    = $this->request->getPost('daily_translation_limit');
+        $dailyLimit       = ($subscriptionType === 'lifetime' || $dailyLimitRaw === '' || $dailyLimitRaw === null)
+            ? null
+            : (int) $dailyLimitRaw;
+
         $data = [
-            'name' => $name,
-            'slug' => $slug,
-            'languages' => json_encode(['en', 'de', 'es']), // Fixed languages as per plan
-            'default_ai_provider' => $this->request->getPost('default_ai_provider'),
-            'api_key' => $encryptedApiKey,
-            'is_active' => 1,
+            'name'                    => $name,
+            'slug'                    => $slug,
+            'languages'               => json_encode(['en', 'de', 'es']), // Fixed languages as per plan
+            'default_ai_provider'     => $this->request->getPost('default_ai_provider'),
+            'api_key'                 => $encryptedApiKey,
+            'is_active'               => 1,
+            'subscription_type'       => $subscriptionType,
+            'daily_translation_limit' => $dailyLimit,
         ];
 
         if ($this->projectModel->insert($data)) {
@@ -156,11 +164,19 @@ class ProjectsController extends BaseController
             return redirect()->back()->withInput()->with('error', 'A project with this name already exists.');
         }
 
+        $subscriptionType = $this->request->getPost('subscription_type') ?? 'subscription';
+        $dailyLimitRaw    = $this->request->getPost('daily_translation_limit');
+        $dailyLimit       = ($subscriptionType === 'lifetime' || $dailyLimitRaw === '' || $dailyLimitRaw === null)
+            ? null
+            : (int) $dailyLimitRaw;
+
         $data = [
-            'name' => $name,
-            'slug' => $slug,
-            'default_ai_provider' => $this->request->getPost('default_ai_provider'),
-            'is_active' => $this->request->getPost('is_active'),
+            'name'                    => $name,
+            'slug'                    => $slug,
+            'default_ai_provider'     => $this->request->getPost('default_ai_provider'),
+            'is_active'               => $this->request->getPost('is_active'),
+            'subscription_type'       => $subscriptionType,
+            'daily_translation_limit' => $dailyLimit,
         ];
 
         // Update API key if provided

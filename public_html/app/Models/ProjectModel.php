@@ -19,6 +19,8 @@ class ProjectModel extends Model
         'default_ai_provider',
         'api_key',
         'is_active',
+        'subscription_type',
+        'daily_translation_limit',
     ];
 
     // Dates
@@ -35,6 +37,8 @@ class ProjectModel extends Model
         'languages'           => 'required',
         'default_ai_provider' => 'required|in_list[claude,openai]',
         'api_key'             => 'required',
+        'subscription_type'       => 'permit_empty|in_list[subscription,lifetime]',
+        'daily_translation_limit' => 'permit_empty|is_natural_no_zero',
     ];
     protected $validationMessages   = [
         'name' => [

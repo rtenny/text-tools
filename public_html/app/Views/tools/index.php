@@ -24,7 +24,13 @@ $langLabels = [
 
 <!-- Tab 2: Multilingual Translator -->
 <div id="translator" class="tab-content">
-    <?= view('tools/tabs/translator', ['languages' => $languages, 'langLabels' => $langLabels]) ?>
+    <?= view('tools/tabs/translator', [
+        'languages'   => $languages,
+        'langLabels'  => $langLabels,
+        'dailyLimit'  => $dailyLimit,
+        'todayUsed'   => $todayUsed,
+        'isUnlimited' => $isUnlimited,
+    ]) ?>
 </div>
 
 <!-- Tab 3: Unique Rewriter -->
@@ -42,6 +48,12 @@ $langLabels = [
     window.CSRF_TOKEN_NAME = '<?= csrf_token() ?>';
     window.CSRF_TOKEN_HASH = '<?= csrf_hash() ?>';
     window.BASE_URL = '<?= base_url() ?>';
+    window.TRANSLATION_LIMIT = <?= json_encode([
+        'used'          => $todayUsed,
+        'limit'         => $dailyLimit,
+        'is_unlimited'  => $isUnlimited,
+        'limit_reached' => (!$isUnlimited && $todayUsed >= ($dailyLimit ?? 0)),
+    ]) ?>;
 </script>
 
 <?= $this->endSection() ?>
