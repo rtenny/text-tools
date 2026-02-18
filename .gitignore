@@ -32,6 +32,7 @@ phpunit.xml
 
 # Claude Code
 .claude/
+docs/images
 
 # IDE and Editor files
 .idea/
