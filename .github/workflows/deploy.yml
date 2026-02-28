@@ -27,7 +27,7 @@ jobs:
             set net:max-retries 10
             set net:reconnect-interval-base 5
             set net:reconnect-interval-multiplier 1
-            open -u $FTP_USERNAME,$FTP_PASSWORD ftps://$FTP_SERVER
+            open -u $FTP_USERNAME,$FTP_PASSWORD ftp://$FTP_SERVER
             mirror --reverse --verbose \
               --exclude-glob .git \
               --exclude-glob .github \
