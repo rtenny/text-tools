@@ -10,47 +10,53 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Deploy via FTPS
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftps
-          port: 21
-          server-dir: ${{ secrets.FTP_SERVER_DIR || './' }}
-          local-dir: ./public_html/
-          log-level: verbose
-          dangerous-clean-slate: false
-          timeout: 600000
-          security: loose
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/.github/**
-            **/.vscode/**
-            **/node_modules/**
-            **/tests/**
-            **/writable/cache/**
-            **/writable/session/**
-            **/writable/logs/**
-            **/writable/uploads/**
-            **/.env
-            **/.env.example
-            **/env
-            **/phpunit.xml
-            **/phpunit.xml.dist
-            **/README.md
-            **/CONTRIBUTING.md
-            **/CLAUDE.md
+      - name: Install lftp
+        run: sudo apt-get install -y lftp
+
+      - name: Deploy via lftp
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          SERVER_DIR: ${{ secrets.FTP_SERVER_DIR || './' }}
+        run: |
+          lftp -e "
+            set ftp:passive-mode true
+            set ftp:ssl-force true
+            set ssl:verify-certificate false
+            set net:max-retries 10
+            set net:reconnect-interval-base 5
+            set net:reconnect-interval-multiplier 1
+            open -u $FTP_USERNAME,$FTP_PASSWORD ftps://$FTP_SERVER
+            mirror --reverse --verbose \
+              --exclude-glob .git \
+              --exclude-glob .github \
+              --exclude-glob .vscode \
+              --exclude-glob node_modules \
+              --exclude-glob tests \
+              --exclude writable/cache \
+              --exclude writable/session \
+              --exclude writable/logs \
+              --exclude writable/uploads \
+              --exclude-glob .env \
+              --exclude-glob .env.example \
+              --exclude-glob env \
+              --exclude-glob phpunit.xml \
+              --exclude-glob phpunit.xml.dist \
+              --exclude-glob README.md \
+              --exclude-glob CONTRIBUTING.md \
+              --exclude-glob CLAUDE.md \
+              ./public_html/ $SERVER_DIR
+            quit
+          "
 
       - name: Run database migrations via HTTP
         run: |
-          echo "🔄 Running database migrations via HTTP..."
+          echo "Running database migrations via HTTP..."
           curl -f -s "${{ secrets.SITE_URL_LIVE }}/migrate?key=${{ secrets.MIGRATION_KEY }}"
 
       - name: Deploy notification
         run: |
-          echo "✅ Deployment completed successfully!"
+          echo "Deployment completed successfully!"
           echo "Files from public_html/ have been copied to the server root directory."
           echo "Database migrations have been triggered via HTTP."
