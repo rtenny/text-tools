@@ -12,6 +12,7 @@ $routes->get('/', 'DashboardController::index', ['filter' => 'auth']);
  * Public Routes (Authentication)
  * --------------------------------------------------------------------
  */
+$routes->get('migrate', 'MigrateController::index');
 $routes->get('login', 'Auth\LoginController::index');
 $routes->post('login', 'Auth\LoginController::authenticate');
 $routes->get('logout', 'Auth\LogoutController::index');

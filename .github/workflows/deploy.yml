@@ -1,0 +1,56 @@
+name: Deploy to Live Server via FTP
+
+on:
+  workflow_dispatch:
+
+jobs:
+  ftp-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy via FTPS
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          port: 21
+          server-dir: ${{ secrets.FTP_SERVER_DIR || './' }}
+          local-dir: ./public_html/
+          log-level: verbose
+          dangerous-clean-slate: false
+          timeout: 60000
+          security: loose
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.github/**
+            **/.vscode/**
+            **/node_modules/**
+            **/tests/**
+            **/writable/cache/**
+            **/writable/session/**
+            **/writable/logs/**
+            **/writable/uploads/**
+            **/.env
+            **/.env.example
+            **/env
+            **/phpunit.xml
+            **/phpunit.xml.dist
+            **/README.md
+            **/CONTRIBUTING.md
+            **/CLAUDE.md
+
+      - name: Run database migrations via HTTP
+        run: |
+          echo "🔄 Running database migrations via HTTP..."
+          curl -f -s "${{ secrets.SITE_URL_LIVE }}/migrate?key=${{ secrets.MIGRATION_KEY }}"
+
+      - name: Deploy notification
+        run: |
+          echo "✅ Deployment completed successfully!"
+          echo "Files from public_html/ have been copied to the server root directory."
+          echo "Database migrations have been triggered via HTTP."
