@@ -1,13 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= esc($title ?? 'Login') ?> - Property Text Tools</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <?= view('partials/_head', ['title' => $title ?? null, 'defaultTitle' => 'Login']) ?>
     <style>
-        /* Luxury Slate Theme */
+        /* Guest layout — centred login/reset page */
         body {
             background: linear-gradient(135deg, #1A1C1E 0%, #25282C 100%);
             min-height: 100vh;
@@ -49,26 +45,10 @@
             margin-bottom: 0.5rem;
             display: block;
         }
-        .alert {
-            padding: 1rem;
-            border-radius: 6px;
-            margin-bottom: 1rem;
-        }
-        .alert-error {
-            background-color: #7f1d1d;
-            border: 1px solid #ef4444;
-            color: #fecaca;
-        }
-        .alert-success {
-            background-color: #065f46;
-            border: 1px solid #10b981;
-            color: #d1fae5;
-        }
-        .alert-info {
-            background-color: #2a2d31;
-            border: 1px solid #D4AF37;
-            color: #f5e6c8;
-        }
+        .alert { padding: 1rem; border-radius: 6px; margin-bottom: 1rem; }
+        .alert-error   { background-color: #7f1d1d; border: 1px solid #ef4444; color: #fecaca; }
+        .alert-success { background-color: #065f46; border: 1px solid #10b981; color: #d1fae5; }
+        .alert-info    { background-color: #2a2d31; border: 1px solid #D4AF37; color: #f5e6c8; }
     </style>
     <?= $this->renderSection('styles') ?>
 </head>
@@ -85,34 +65,7 @@
 
         <!-- Main Card -->
         <div class="card p-8">
-            <?php if (session()->getFlashdata('success')): ?>
-                <div class="alert alert-success">
-                    <?= session()->getFlashdata('success') ?>
-                </div>
-            <?php endif; ?>
-
-            <?php if (session()->getFlashdata('error')): ?>
-                <div class="alert alert-error">
-                    <?= session()->getFlashdata('error') ?>
-                </div>
-            <?php endif; ?>
-
-            <?php if (session()->getFlashdata('info')): ?>
-                <div class="alert alert-info">
-                    <?= session()->getFlashdata('info') ?>
-                </div>
-            <?php endif; ?>
-
-            <?php if (session()->has('errors')): ?>
-                <div class="alert alert-error">
-                    <ul class="list-disc list-inside">
-                        <?php foreach (session('errors') as $error): ?>
-                            <li><?= esc($error) ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-            <?php endif; ?>
-
+            <?= view('partials/_flash_messages') ?>
             <?= $this->renderSection('content') ?>
         </div>
 
@@ -125,28 +78,6 @@
     </div>
 
     <?= $this->renderSection('scripts') ?>
-    <script>
-        lucide.createIcons();
-
-        // Auto-fade success and info messages after 5 seconds
-        document.addEventListener('DOMContentLoaded', function() {
-            const successAlerts = document.querySelectorAll('.alert-success, .alert-info');
-
-            successAlerts.forEach(function(alert) {
-                // Add transition for smooth fade
-                alert.style.transition = 'opacity 0.5s ease-out';
-
-                // Fade out after 5 seconds
-                setTimeout(function() {
-                    alert.style.opacity = '0';
-
-                    // Remove from DOM after fade completes
-                    setTimeout(function() {
-                        alert.remove();
-                    }, 500);
-                }, 5000);
-            });
-        });
-    </script>
+    <?= view('partials/_page_script') ?>
 </body>
 </html>

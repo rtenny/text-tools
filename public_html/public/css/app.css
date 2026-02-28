@@ -142,7 +142,21 @@
     opacity: 0.2;
 }
 
-/* Alert */
+/* Alerts */
+.alert {
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+}
+.alert-info {
+    background-color: #2a2d31;
+    border: 1px solid #D4AF37;
+    color: #f5e6c8;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+}
 .alert-error {
     background-color: #7f1d1d;
     border: 1px solid #ef4444;
