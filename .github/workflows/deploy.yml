@@ -28,7 +28,7 @@ jobs:
             set net:reconnect-interval-base 5
             set net:reconnect-interval-multiplier 1
             open -u $FTP_USERNAME,$FTP_PASSWORD ftp://$FTP_SERVER
-            mirror --reverse --verbose \
+            mirror --reverse --verbose --ignore-time \
               --exclude-glob .git \
               --exclude-glob .github \
               --exclude-glob .vscode \
