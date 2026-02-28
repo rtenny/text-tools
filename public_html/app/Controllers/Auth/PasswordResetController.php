@@ -77,9 +77,14 @@ class PasswordResetController extends BaseController
         $password = $this->request->getPost('password');
 
         // Update user password (skip validation since we're only updating the password)
-        $this->userModel->skipValidation(true)->update($userId, [
+        $updated = $this->userModel->skipValidation(true)->update($userId, [
             'password_hash' => password_hash($password, PASSWORD_DEFAULT),
         ]);
+
+        if (!$updated) {
+            log_message('error', 'Password reset failed for user ' . $userId . ': ' . print_r($this->userModel->errors(), true));
+            return redirect()->back()->with('error', 'Failed to save new password. Please try again or contact support.');
+        }
 
         // Mark token as used
         $resetRecord = $this->passwordResetModel

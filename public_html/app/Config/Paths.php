@@ -85,6 +85,23 @@ class Paths
      * the .env file is located.
      * Please consider security implications when changing this
      * value - the directory should not be publicly accessible.
+     *
+     * On cPanel shared hosting the .env lives outside public_html.
+     * From app/Config/, four levels up reaches /home/[user]/ which
+     * is above public_html. If a .env file is found there it is used
+     * automatically; otherwise the default (project root) is used.
+     * This allows the same codebase to work in both environments.
      */
-    public string $envDirectory = __DIR__ . '/../../';
+    public string $envDirectory;
+
+    public function __construct()
+    {
+        $externalPath = realpath(__DIR__ . '/../../../../');
+
+        if ($externalPath !== false && file_exists($externalPath . DIRECTORY_SEPARATOR . '.env')) {
+            $this->envDirectory = $externalPath;
+        } else {
+            $this->envDirectory = __DIR__ . '/../../';
+        }
+    }
 }

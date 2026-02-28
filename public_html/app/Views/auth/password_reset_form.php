@@ -5,6 +5,22 @@
 <h2 class="text-2xl font-bold text-white mb-2 text-center">Reset Your Password</h2>
 <p class="text-sm text-gray-400 mb-6 text-center">Enter a new password for <?= esc($user['email']) ?></p>
 
+<?php if (session()->getFlashdata('errors')): ?>
+<div class="mb-4 p-4 bg-red-900 bg-opacity-40 border border-red-500 rounded-lg">
+    <ul class="list-disc list-inside text-sm text-red-300 space-y-1">
+        <?php foreach (session()->getFlashdata('errors') as $error): ?>
+            <li><?= esc($error) ?></li>
+        <?php endforeach; ?>
+    </ul>
+</div>
+<?php endif; ?>
+
+<?php if (session()->getFlashdata('error')): ?>
+<div class="mb-4 p-4 bg-red-900 bg-opacity-40 border border-red-500 rounded-lg">
+    <p class="text-sm text-red-300"><?= esc(session()->getFlashdata('error')) ?></p>
+</div>
+<?php endif; ?>
+
 <form action="<?= base_url("password-reset/{$userId}/{$token}") ?>" method="post">
     <?= csrf_field() ?>
 
