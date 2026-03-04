@@ -40,10 +40,11 @@ class TownsController extends BaseController
     public function create()
     {
         $data = [
-            'title' => 'Create Town',
+            'title'  => 'Create Town',
+            'isEdit' => false,
         ];
 
-        return view('superadmin/towns/create', $data);
+        return view('superadmin/towns/form', $data);
     }
 
     /**
@@ -84,12 +85,13 @@ class TownsController extends BaseController
         $projectCount = $this->townService->getProjectCountForTown($townId);
 
         $data = [
-            'title' => 'Edit Town',
-            'town' => $town,
+            'title'         => 'Edit Town',
+            'isEdit'        => true,
+            'town'          => $town,
             'project_count' => $projectCount,
         ];
 
-        return view('superadmin/towns/edit', $data);
+        return view('superadmin/towns/form', $data);
     }
 
     /**

@@ -32,10 +32,11 @@ class ProjectsController extends BaseController
     public function create()
     {
         $data = [
-            'title' => 'Create Project',
+            'title'  => 'Create Project',
+            'isEdit' => false,
         ];
 
-        return view('superadmin/projects/create', $data);
+        return view('superadmin/projects/form', $data);
     }
 
     public function store()
@@ -122,13 +123,14 @@ class ProjectsController extends BaseController
         $assignedTownIds = $townService->getTownIdsForProject($id);
 
         $data = [
-            'title' => 'Edit Project',
-            'project' => $project,
-            'allTowns' => $allTowns,
+            'title'           => 'Edit Project',
+            'isEdit'          => true,
+            'project'         => $project,
+            'allTowns'        => $allTowns,
             'assignedTownIds' => $assignedTownIds,
         ];
 
-        return view('superadmin/projects/edit', $data);
+        return view('superadmin/projects/form', $data);
     }
 
     public function update($id)
