@@ -73,10 +73,10 @@
                 <select id="subscription_type" name="subscription_type" class="form-select" required
                         onchange="toggleLimitField(this.value)">
                     <option value="subscription" <?= old('subscription_type', 'subscription') === 'subscription' ? 'selected' : '' ?>>
-                        Subscription (€50/month)
+                        Subscription (€/month)
                     </option>
                     <option value="lifetime" <?= old('subscription_type') === 'lifetime' ? 'selected' : '' ?>>
-                        Lifetime (€1000 one-off)
+                        Lifetime (€999 one-off)
                     </option>
                 </select>
                 <p class="text-xs text-gray-500 mt-1">Lifetime projects have no daily translation limit.</p>
