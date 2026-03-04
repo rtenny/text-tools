@@ -94,7 +94,7 @@ $project = $project ?? [];
                 <select id="subscription_type" name="subscription_type" class="form-select" required
                         onchange="toggleLimitField(this.value)">
                     <option value="subscription" <?= old('subscription_type', $project['subscription_type'] ?? 'subscription') === 'subscription' ? 'selected' : '' ?>>
-                        Subscription (€50/month)
+                        Subscription (€/month)
                     </option>
                     <option value="lifetime" <?= old('subscription_type', $project['subscription_type'] ?? 'subscription') === 'lifetime' ? 'selected' : '' ?>>
                         Lifetime (€999 one-off)
