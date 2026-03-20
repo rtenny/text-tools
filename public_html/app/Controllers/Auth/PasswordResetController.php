@@ -5,7 +5,7 @@ namespace App\Controllers\Auth;
 use App\Controllers\BaseController;
 use App\Models\UserModel;
 use App\Models\PasswordResetModel;
-use App\Libraries\PasswordResetService;
+use App\Services\PasswordResetService;
 
 class PasswordResetController extends BaseController
 {

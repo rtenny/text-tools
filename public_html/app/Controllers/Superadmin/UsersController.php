@@ -5,7 +5,7 @@ namespace App\Controllers\Superadmin;
 use App\Controllers\BaseController;
 use App\Models\UserModel;
 use App\Models\ProjectModel;
-use App\Libraries\PasswordResetService;
+use App\Services\PasswordResetService;
 
 class UsersController extends BaseController
 {
