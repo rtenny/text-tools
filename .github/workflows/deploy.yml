@@ -1,6 +1,9 @@
 name: Deploy to Live Server via FTP
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
