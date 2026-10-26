@@ -22,8 +22,10 @@ public_html/.env.production
 
 # Composer
 /vendor/
+public_html/vendor/
 composer.phar
 composer.lock
+!public_html/composer.lock
 
 # PHPUnit
 .phpunit.result.cache
