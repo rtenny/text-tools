@@ -23,45 +23,38 @@ jobs:
       - name: Install application dependencies
         run: composer install --working-dir=public_html --no-dev --prefer-dist --no-interaction --optimize-autoloader
 
-      - name: Install lftp
-        run: sudo apt-get install -y lftp
-
-      - name: Deploy via lftp
-        env:
-          FTP_SERVER: ${{ secrets.FTP_SERVER }}
-          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
-          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-          SERVER_DIR: ${{ secrets.FTP_SERVER_DIR || './' }}
-        run: |
-          lftp -e "
-            set ftp:passive-mode true
-            set ftp:ssl-force true
-            set ssl:verify-certificate false
-            set net:max-retries 10
-            set net:reconnect-interval-base 5
-            set net:reconnect-interval-multiplier 1
-            open -u $FTP_USERNAME,$FTP_PASSWORD ftp://$FTP_SERVER
-            mirror --reverse --verbose --ignore-time \
-              --exclude-glob .git \
-              --exclude-glob .github \
-              --exclude-glob .vscode \
-              --exclude-glob node_modules \
-              --exclude-glob tests \
-              --exclude writable/cache \
-              --exclude writable/session \
-              --exclude writable/logs \
-              --exclude writable/uploads \
-              --exclude-glob .env \
-              --exclude-glob .env.example \
-              --exclude-glob env \
-              --exclude-glob phpunit.xml \
-              --exclude-glob phpunit.xml.dist \
-              --exclude-glob README.md \
-              --exclude-glob CONTRIBUTING.md \
-              --exclude-glob CLAUDE.md \
-              ./public_html/ $SERVER_DIR
-            quit
-          "
+      - name: Deploy via FTPS
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          port: 21
+          security: loose
+          timeout: 120000
+          log-level: standard
+          local-dir: ./public_html/
+          server-dir: ${{ secrets.FTP_SERVER_DIR || './' }}
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.github/**
+            **/.vscode/**
+            **/node_modules/**
+            **/tests/**
+            **/writable/cache/**
+            **/writable/session/**
+            **/writable/logs/**
+            **/writable/uploads/**
+            **/.env
+            **/.env.example
+            **/env
+            **/phpunit.xml
+            **/phpunit.xml.dist
+            **/README.md
+            **/CONTRIBUTING.md
+            **/CLAUDE.md
 
       - name: Run database migrations via HTTP
         run: |
